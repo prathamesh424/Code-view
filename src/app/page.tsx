@@ -1,6 +1,7 @@
 import { Hero } from '@/components/landing/Hero';
 import { Features } from '@/components/landing/Features';
 import { LanguageShowcase } from '@/components/landing/LanguageShowcase';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -9,14 +10,35 @@ export default function Home() {
       <Features />
       <LanguageShowcase />
 
-      {/* Footer */}
-      <footer className="py-8 border-t border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm text-muted">
-            CodeView — Interactive Code Visualizer &amp; Debugger. Built with Next.js, Monaco Editor, and Framer Motion.
-          </p>
+      {/* Internal Links Section for SEO */}
+      <section className="py-16 border-t border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold text-foreground text-center mb-8">
+            Explore Code Visualizers
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {[
+              { href: '/javascript-visualizer', label: 'JavaScript', color: 'text-warning' },
+              { href: '/python-visualizer', label: 'Python', color: 'text-info' },
+              { href: '/cpp-visualizer', label: 'C++', color: 'text-accent' },
+              { href: '/java-visualizer', label: 'Java', color: 'text-error' },
+              { href: '/event-loop-visualizer', label: 'Event Loop', color: 'text-success' },
+              { href: '/debugger-online', label: 'Debugger', color: 'text-accent-secondary' },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex flex-col items-center gap-2 p-4 rounded-xl border border-border bg-surface hover:border-accent/50 hover:bg-accent/5 transition-all duration-200 group"
+              >
+                <span className={`text-sm font-semibold ${item.color} group-hover:scale-105 transition-transform`}>
+                  {item.label}
+                </span>
+                <span className="text-xs text-muted">Visualizer</span>
+              </Link>
+            ))}
+          </div>
         </div>
-      </footer>
+      </section>
     </div>
   );
 }

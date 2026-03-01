@@ -1,0 +1,21 @@
+{
+  "name": "CodeView",
+  "short_name": "CodeView",
+  "description": "Interactive code execution visualizer and debugger. Visualize the event loop, call stack, memory, and more.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0d17",
+  "theme_color": "#818cf8",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Code2, Play, Menu, X, Database, BarChart3, Wrench, Trophy } from 'lucide-react';
+import { Code2, Play, Menu, X, Database, BarChart3, Wrench, Trophy, BookOpen } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { href: '/algorithms', label: 'Algorithms', icon: 'chart' },
   { href: '/tools', label: 'Tools', icon: 'wrench' },
   { href: '/challenges', label: 'Challenges', icon: 'trophy' },
+  { href: '/blog', label: 'Blog', icon: 'book' },
 ];
 
 export function Header() {
@@ -61,6 +62,9 @@ export function Header() {
                 )}
                 {item.icon === 'trophy' && (
                   <Trophy className="w-3.5 h-3.5 inline mr-1.5 -mt-0.5" />
+                )}
+                {item.icon === 'book' && (
+                  <BookOpen className="w-3.5 h-3.5 inline mr-1.5 -mt-0.5" />
                 )}
                 {item.label}
               </Link>
