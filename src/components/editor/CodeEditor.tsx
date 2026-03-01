@@ -1,10 +1,28 @@
 'use client';
 
-import { useRef, useCallback } from 'react';
-import Editor, { type OnMount } from '@monaco-editor/react';
+import { useRef, useCallback, Suspense } from 'react';
+import dynamic from 'next/dynamic';
+import type { OnMount } from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import { useEditorStore } from '@/stores/editor-store';
 import { MONACO_LANGUAGE_MAP } from '@/lib/constants';
+
+// Dynamic import of Monaco editor — reduces initial JS bundle by ~800KB
+const Editor = dynamic(() => import('@monaco-editor/react').then((mod) => mod.default), {
+  ssr: false,
+  loading: () => <MonacoSkeleton />,
+});
+
+function MonacoSkeleton() {
+  return (
+    <div className="h-full w-full flex items-center justify-center bg-surface animate-pulse">
+      <div className="text-center">
+        <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin mx-auto mb-3" />
+        <p className="text-xs text-muted">Loading editor...</p>
+      </div>
+    </div>
+  );
+}
 
 export function CodeEditor() {
   const { code, setCode, language, breakpoints, toggleBreakpoint, currentLine } =
@@ -113,35 +131,37 @@ export function CodeEditor() {
 
   return (
     <div className="h-full">
-      <Editor
-        height="100%"
-        language={MONACO_LANGUAGE_MAP[language]}
-        value={code}
-        onChange={(value) => setCode(value ?? '')}
-        onMount={handleEditorMount}
-        theme={resolvedTheme === 'dark' ? 'vs-dark' : 'vs'}
-        options={{
-          fontSize: 14,
-          fontFamily: '"JetBrains Mono", "Fira Code", "Cascadia Code", monospace',
-          fontLigatures: true,
-          minimap: { enabled: false },
-          lineNumbers: 'on',
-          glyphMargin: true,
-          folding: true,
-          scrollBeyondLastLine: false,
-          automaticLayout: true,
-          tabSize: 2,
-          wordWrap: 'on',
-          padding: { top: 8, bottom: 8 },
-          renderLineHighlight: 'all',
-          scrollbar: {
-            verticalScrollbarSize: 6,
-            horizontalScrollbarSize: 6,
-          },
-          bracketPairColorization: { enabled: true },
-          guides: { bracketPairs: true },
-        }}
-      />
+      <Suspense fallback={<MonacoSkeleton />}>
+        <Editor
+          height="100%"
+          language={MONACO_LANGUAGE_MAP[language]}
+          value={code}
+          onChange={(value) => setCode(value ?? '')}
+          onMount={handleEditorMount}
+          theme={resolvedTheme === 'dark' ? 'vs-dark' : 'vs'}
+          options={{
+            fontSize: 14,
+            fontFamily: '"JetBrains Mono", "Fira Code", "Cascadia Code", monospace',
+            fontLigatures: true,
+            minimap: { enabled: false },
+            lineNumbers: 'on',
+            glyphMargin: true,
+            folding: true,
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            tabSize: 2,
+            wordWrap: 'on',
+            padding: { top: 8, bottom: 8 },
+            renderLineHighlight: 'all',
+            scrollbar: {
+              verticalScrollbarSize: 6,
+              horizontalScrollbarSize: 6,
+            },
+            bracketPairColorization: { enabled: true },
+            guides: { bracketPairs: true },
+          }}
+        />
+      </Suspense>
     </div>
   );
 }

@@ -1,11 +1,14 @@
 {
-  "name": "CodeView",
+  "name": "CodeView — Interactive Code Visualizer",
   "short_name": "CodeView",
-  "description": "Interactive code execution visualizer and debugger. Visualize the event loop, call stack, memory, and more.",
+  "description": "Interactive code execution visualizer and debugger. Visualize the event loop, call stack, memory, and more for JavaScript, Python, C++, and Java.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0b0d17",
   "theme_color": "#818cf8",
+  "orientation": "any",
+  "categories": ["developer tools", "education", "productivity"],
+  "lang": "en",
   "icons": [
     {
       "src": "/favicon.ico",
@@ -16,6 +19,18 @@
       "src": "/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

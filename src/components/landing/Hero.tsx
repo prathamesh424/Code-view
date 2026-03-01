@@ -32,8 +32,8 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-tight"
           >
-            See How Your Code{' '}
-            <span className="gradient-text">Really Works</span>
+            Interactive Code Visualizer:{' '}
+            <span className="gradient-text">See How Your Code Really Works</span>
           </motion.h1>
 
           <motion.p
