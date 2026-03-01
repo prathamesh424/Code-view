@@ -113,7 +113,7 @@ export default function PythonVisualizerPage() {
             GIL can trip up even experienced developers.
           </p>
           <p className="text-muted leading-relaxed mb-4">
-            CodeView lets you paste any Python snippet and step through it
+            Code Visualizer lets you paste any Python snippet and step through it
             line by line, watching exactly how variables are created, how
             objects are referenced, and when memory is freed. It&apos;s the
             best way to truly understand Python internals.
@@ -122,7 +122,7 @@ export default function PythonVisualizerPage() {
             Better Than Python Tutor
           </h3>
           <p className="text-muted leading-relaxed">
-            Unlike traditional tools, CodeView shows you the full picture:
+            Unlike traditional tools, Code Visualizer shows you the full picture:
             memory layout, reference counting, garbage collection cycles,
             and even GIL states — all with a modern, beautiful interface.
           </p>

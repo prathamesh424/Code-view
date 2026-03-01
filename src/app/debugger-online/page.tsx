@@ -109,7 +109,7 @@ export default function DebuggerOnlinePage() {
           </h2>
           <p className="text-muted leading-relaxed mb-4">
             Setting up a local development environment just to debug a small
-            snippet is overkill. CodeView&apos;s online debugger lets you
+            snippet is overkill. Code Visualizer&apos;s online debugger lets you
             paste any code and start debugging immediately — no IDE, no
             plugins, no configuration.
           </p>

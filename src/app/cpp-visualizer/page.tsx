@@ -111,7 +111,7 @@ export default function CppVisualizerPage() {
             and undefined behavior are notoriously hard to debug mentally.
           </p>
           <p className="text-muted leading-relaxed">
-            CodeView&apos;s C++ visualizer makes memory management visual.
+            Code Visualizer&apos;s C++ visualizer makes memory management visual.
             See exactly where each object lives in memory, when it&apos;s
             allocated, and when it&apos;s freed. No more guessing about
             pointer arithmetic or scope lifetimes.

@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title:
-    "Data Structure Visualizer — Arrays, Trees, Graphs, Hash Maps & More",
+  title: "Data Structures Visualizer - Learn Lists, Trees, & Graphs",
   description:
-    "Interactive data structure visualizations: arrays, linked lists, stacks, queues, binary search trees, graphs, hash maps, and heaps. Watch operations animate in real-time with complexity analysis.",
+    "Visualize how data structures work. Interactive animations for Linked Lists, Binary Trees, Stacks, Queues, and Graphs to master CS concepts.",
   keywords: [
     "data structure visualizer",
     "binary search tree visualizer",
@@ -20,18 +19,17 @@ export const metadata: Metadata = {
     canonical: "https://www.codevisualizer.app/data-structures",
   },
   openGraph: {
-    title:
-      "Data Structure Visualizer — Arrays, Trees, Graphs, Hash Maps & More",
+    title: "Data Structures Visualizer - Learn Lists, Trees, & Graphs",
     description:
-      "Interactive visualizations of arrays, trees, graphs, hash maps, and heaps with real-time operation animations.",
+      "Visualize how data structures work. Interactive animations for Linked Lists, Binary Trees, Stacks, Queues, and Graphs.",
     url: "https://www.codevisualizer.app/data-structures",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Data Structure Visualizer — Interactive DS Animations",
+    title: "Data Structures Visualizer - Learn Lists, Trees, & Graphs",
     description:
-      "Visualize arrays, trees, graphs, hash maps, and heaps with real-time animations.",
+      "Interactive animations for Linked Lists, Binary Trees, Stacks, Queues, and Graphs.",
   },
 };
 

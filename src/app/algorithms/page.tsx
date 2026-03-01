@@ -87,7 +87,7 @@ export default function AlgorithmsPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
             <BarChart3 className="w-8 h-8 inline mr-3 text-accent -mt-1" />
-            Algorithm Visualizer
+            Algorithm Visualizations
           </h1>
           <p className="text-muted text-sm">
             Watch algorithms in action with real-time animations. Adjust speed, change inputs, and compare different approaches.
@@ -136,6 +136,20 @@ export default function AlgorithmsPage() {
         >
           <SelectedComponent />
         </motion.div>
+
+        {/* SEO Content Section — provides crawlable text for search engines */}
+        <section id="seo-content" className="mt-12 pt-8 border-t border-border">
+          <h2 className="text-lg font-semibold text-foreground mb-3">About the Algorithm Visualizer</h2>
+          <p className="text-sm text-muted leading-relaxed">
+            Code Visualizer&apos;s algorithm visualizer brings sorting, searching, pathfinding, and 
+            dynamic programming algorithms to life with real-time animations. Watch Bubble Sort swap 
+            elements, see Dijkstra&apos;s shortest path unfold on a grid, or trace recursive call trees 
+            for Fibonacci — all step by step. Understanding Big O notation becomes intuitive when you 
+            can see the difference between O(n²) and O(n log n) play out visually. This visual learning 
+            tool doubles as a code debugger for algorithm logic, making it ideal for coding interviews, 
+            competitive programming prep, and computer science education.
+          </p>
+        </section>
       </div>
     </div>
   );

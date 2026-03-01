@@ -42,10 +42,10 @@ const articleJsonLd = {
   url: "https://www.codevisualizer.app/blog/python-memory-management",
   datePublished: "2026-02-20T00:00:00Z",
   dateModified: "2026-02-20T00:00:00Z",
-  author: { "@type": "Organization", name: "CodeView" },
+  author: { "@type": "Organization", name: "Code Visualizer" },
   publisher: {
     "@type": "Organization",
-    name: "CodeView",
+    name: "Code Visualizer",
     url: "https://www.codevisualizer.app",
   },
 };
@@ -183,7 +183,7 @@ export default function PythonMemoryManagementArticle() {
               href="/python-visualizer"
               className="text-accent hover:underline"
             >
-              CodeView&apos;s Python Visualizer
+              Code Visualizer&apos;s Python Visualizer
             </Link>{" "}
             to see reference counts change in real-time as you create,
             assign, and delete objects.

@@ -13,7 +13,8 @@ const inter = Inter({
 });
 
 const SITE_URL = "https://www.codevisualizer.app";
-const SITE_NAME = "CodeView";
+const SITE_NAME = "Code Visualizer";
+const GA_ID = "G-F8VRD29TKC";
 const SITE_DESCRIPTION =
   "Visualize code execution in real-time. See the event loop, call stack, memory layout, heap, and internal engine workings for JavaScript, Python, C++, and Java — step by step.";
 
@@ -30,8 +31,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default:
-      "CodeView — Interactive Code Visualizer & Debugger Online | JS, Python, C++, Java",
-    template: "%s | CodeView — Code Visualizer",
+      "Code Visualizer — Interactive Code Visualizer & Debugger Online | JS, Python, C++, Java",
+    template: "%s | Code Visualizer",
   },
   description: SITE_DESCRIPTION,
   keywords: [
@@ -54,9 +55,9 @@ export const metadata: Metadata = {
     "step by step code execution",
     "programming visualizer",
   ],
-  authors: [{ name: "CodeView Team", url: SITE_URL }],
-  creator: "CodeView",
-  publisher: "CodeView",
+  authors: [{ name: "Code Visualizer Team", url: SITE_URL }],
+  creator: "Code Visualizer",
+  publisher: "Code Visualizer",
   category: "Developer Tools",
   robots: {
     index: true,
@@ -77,20 +78,20 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "CodeView — Interactive Code Visualizer & Debugger Online",
+    title: "Code Visualizer — Interactive Code Visualizer & Debugger Online",
     description: SITE_DESCRIPTION,
     images: [
       {
         url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "CodeView — Interactive Code Visualizer & Debugger for JavaScript, Python, C++, and Java",
+        alt: "Code Visualizer — Interactive Code Visualizer & Debugger for JavaScript, Python, C++, and Java",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "CodeView — Interactive Code Visualizer & Debugger Online",
+    title: "Code Visualizer — Interactive Code Visualizer & Debugger Online",
     description: SITE_DESCRIPTION,
     images: [`${SITE_URL}/og-image.png`],
     creator: "@codevisualizer",
@@ -120,7 +121,7 @@ export const metadata: Metadata = {
 const softwareAppJsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "CodeView",
+  name: "Code Visualizer",
   description: SITE_DESCRIPTION,
   url: SITE_URL,
   applicationCategory: "DeveloperApplication",
@@ -132,7 +133,7 @@ const softwareAppJsonLd = {
   },
   creator: {
     "@type": "Organization",
-    name: "CodeView",
+    name: "Code Visualizer",
     url: SITE_URL,
   },
   featureList: [
@@ -161,7 +162,7 @@ const websiteJsonLd = {
   description: SITE_DESCRIPTION,
   publisher: {
     "@type": "Organization",
-    name: "CodeView",
+    name: "Code Visualizer",
     url: SITE_URL,
     logo: {
       "@type": "ImageObject",
@@ -181,7 +182,7 @@ const websiteJsonLd = {
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "CodeView",
+  name: "Code Visualizer",
   url: SITE_URL,
   logo: `${SITE_URL}/apple-touch-icon.png`,
   sameAs: [],
@@ -194,6 +195,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}');
+            `,
+          }}
+        />
+      </head>
       <body className={`${inter.variable} antialiased`} suppressHydrationWarning>
         <script
           type="application/ld+json"

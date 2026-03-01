@@ -117,7 +117,7 @@ export default function JavaScriptVisualizerPage() {
             happens at each step can be overwhelming.
           </p>
           <p className="text-muted leading-relaxed mb-4">
-            CodeView&apos;s JavaScript visualizer breaks down every line of
+            Code Visualizer&apos;s JavaScript visualizer breaks down every line of
             execution, showing you exactly what the engine does: which
             functions are on the call stack, which variables are in scope,
             and how async operations are queued and resolved.

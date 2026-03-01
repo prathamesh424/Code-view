@@ -46,7 +46,7 @@ export default function DataStructuresPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
             <Database className="w-8 h-8 inline mr-3 text-accent -mt-1" />
-            Data Structure Visualizer
+            Master Data Structures Visually
           </h1>
           <p className="text-muted text-sm">
             Interactive visualizations of fundamental data structures. Observe operations in real-time with step-by-step animations.

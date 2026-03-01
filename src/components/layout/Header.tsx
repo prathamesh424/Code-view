@@ -31,7 +31,7 @@ export function Header() {
               <Code2 className="w-4 h-4 text-accent" />
             </div>
             <span className="font-bold text-lg gradient-text hidden sm:block">
-              CodeView
+              Code Visualizer
             </span>
           </Link>
 

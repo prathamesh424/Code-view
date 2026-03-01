@@ -56,7 +56,7 @@ export default function ToolsPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
             <Wrench className="w-8 h-8 inline mr-3 text-accent -mt-1" />
-            Developer Tools
+            Developer Productivity Tools
           </h1>
           <p className="text-muted text-sm">
             Handy interactive tools for understanding complexity, regex patterns, bitwise operations, and more.

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Code Playground — Run & Visualize Code Online Free",
+  title: "Online Code Playground & Visualizer - Run Code in Real-Time",
   description:
-    "Write and execute JavaScript, Python, C++, and Java code in your browser. Set breakpoints, step through execution, and visualize the call stack, memory, and event loop in real-time.",
+    "Free online code playground. Visualize execution flow, debug algorithms, and test data structures in JavaScript, Python, and C++ instantly.",
   keywords: [
     "code playground",
     "online code editor",
@@ -18,17 +18,17 @@ export const metadata: Metadata = {
     canonical: "https://www.codevisualizer.app/playground",
   },
   openGraph: {
-    title: "Code Playground — Run & Visualize Code Online Free",
+    title: "Online Code Playground & Visualizer - Run Code in Real-Time",
     description:
-      "Write, execute, and visualize JavaScript, Python, C++, and Java code in your browser — no install required.",
+      "Free online code playground. Visualize execution flow, debug algorithms, and test data structures in JavaScript, Python, and C++ instantly.",
     url: "https://www.codevisualizer.app/playground",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Code Playground — Run & Visualize Code Online Free",
+    title: "Online Code Playground & Visualizer - Run Code in Real-Time",
     description:
-      "Write, execute, and visualize code in your browser — no install required.",
+      "Free online code playground. Visualize execution flow, debug algorithms, and test data structures instantly.",
   },
 };
 

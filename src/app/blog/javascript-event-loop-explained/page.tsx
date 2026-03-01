@@ -44,10 +44,10 @@ const articleJsonLd = {
   url: "https://www.codevisualizer.app/blog/javascript-event-loop-explained",
   datePublished: "2026-02-15T00:00:00Z",
   dateModified: "2026-02-15T00:00:00Z",
-  author: { "@type": "Organization", name: "CodeView" },
+  author: { "@type": "Organization", name: "Code Visualizer" },
   publisher: {
     "@type": "Organization",
-    name: "CodeView",
+    name: "Code Visualizer",
     url: "https://www.codevisualizer.app",
   },
 };
@@ -197,7 +197,7 @@ export default function JavaScriptEventLoopArticle() {
           <p className="text-muted leading-relaxed mb-4">
             Paste this code into{" "}
             <Link href="/playground" className="text-accent hover:underline">
-              CodeView&apos;s playground
+              Code Visualizer&apos;s playground
             </Link>{" "}
             and watch the event loop process each task in real-time.
           </p>

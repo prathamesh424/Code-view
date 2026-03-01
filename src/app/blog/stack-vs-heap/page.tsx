@@ -43,10 +43,10 @@ const articleJsonLd = {
   url: "https://www.codevisualizer.app/blog/stack-vs-heap",
   datePublished: "2026-02-25T00:00:00Z",
   dateModified: "2026-02-25T00:00:00Z",
-  author: { "@type": "Organization", name: "CodeView" },
+  author: { "@type": "Organization", name: "Code Visualizer" },
   publisher: {
     "@type": "Organization",
-    name: "CodeView",
+    name: "Code Visualizer",
     url: "https://www.codevisualizer.app",
   },
 };
@@ -218,7 +218,7 @@ export default function StackVsHeapArticle() {
               href="/cpp-visualizer"
               className="text-accent hover:underline"
             >
-              CodeView&apos;s C++ Visualizer
+              Code Visualizer&apos;s C++ Visualizer
             </Link>{" "}
             or{" "}
             <Link

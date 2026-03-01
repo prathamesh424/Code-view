@@ -11,7 +11,7 @@ export default function ChallengesPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
             <Trophy className="w-8 h-8 inline mr-3 text-accent -mt-1" />
-            Code Challenges
+            Daily Coding Challenges
           </h1>
           <p className="text-muted text-sm">
             Practice coding problems with built-in test cases. Write your solution, run tests, and verify your approach.

@@ -118,7 +118,7 @@ export default function EventLoopVisualizerPage() {
           <p className="text-muted leading-relaxed mb-4">
             The classic interview question &ldquo;What does this code
             output?&rdquo; almost always involves the event loop. With
-            CodeView&apos;s visualizer, you can paste any snippet and
+            Code Visualizer&apos;s visualizer, you can paste any snippet and
             watch the execution order unfold — no more guessing.
           </p>
           <h3 className="text-xl font-semibold text-foreground mt-8 mb-3">

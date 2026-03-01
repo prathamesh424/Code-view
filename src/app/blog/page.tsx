@@ -3,14 +3,14 @@ import Link from "next/link";
 import { BookOpen, Clock, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Blog — CodeView Developer Blog",
+  title: "CodeVisualizer Blog - Tutorials & CS Concepts",
   description:
-    "Learn about code execution, memory management, the event loop, stack vs heap, and more. In-depth articles for developers who want to understand how code really works.",
+    "Read tutorials on computer science fundamentals, coding tips, and how to use visualization to learn programming faster.",
   alternates: { canonical: "https://www.codevisualizer.app/blog" },
   openGraph: {
-    title: "Blog — CodeView Developer Blog",
+    title: "CodeVisualizer Blog - Tutorials & CS Concepts",
     description:
-      "In-depth articles about code execution, memory, the event loop, and programming internals.",
+      "Read tutorials on computer science fundamentals, coding tips, and how to use visualization to learn programming faster.",
     url: "https://www.codevisualizer.app/blog",
     type: "website",
   },
@@ -56,7 +56,7 @@ export default function BlogPage() {
             Developer Blog
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-            CodeView <span className="gradient-text">Blog</span>
+            Latest Tech <span className="gradient-text">Articles</span>
           </h1>
           <p className="text-lg text-muted max-w-xl mx-auto">
             In-depth articles about how code really works — from the event

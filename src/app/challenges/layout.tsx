@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Code Challenges — Practice Coding Problems with Test Cases",
+  title: "Coding Challenges & Logic Puzzles",
   description:
-    "Practice coding challenges with built-in test cases. Solve problems in JavaScript, Python, C++, and Java. Write solutions, run tests, and verify your approach — all in the browser.",
+    "Practice coding interview questions with visual feedback. Solve logic puzzles and improve your problem-solving skills.",
   keywords: [
     "code challenges",
     "coding practice",
@@ -18,17 +18,17 @@ export const metadata: Metadata = {
     canonical: "https://www.codevisualizer.app/challenges",
   },
   openGraph: {
-    title: "Code Challenges — Practice Coding Problems Online",
+    title: "Coding Challenges & Logic Puzzles",
     description:
-      "Practice coding challenges with built-in test cases. Solve problems and verify your solutions in the browser.",
+      "Practice coding interview questions with visual feedback. Solve logic puzzles and improve your problem-solving skills.",
     url: "https://www.codevisualizer.app/challenges",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Code Challenges — Coding Practice Online",
+    title: "Coding Challenges & Logic Puzzles",
     description:
-      "Solve coding problems with test cases in JavaScript, Python, C++, and Java.",
+      "Practice coding interview questions with visual feedback. Solve logic puzzles.",
   },
 };
 

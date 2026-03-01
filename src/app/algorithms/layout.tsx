@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Algorithm Visualizer — Sorting, Searching, Pathfinding & More",
+  title: "Algorithm Visualizer - Sorting, Searching & Pathfinding",
   description:
-    "Interactive algorithm visualizations: sorting (bubble, merge, quick sort), searching (binary search), pathfinding (BFS, DFS, Dijkstra, A*), recursion trees, dynamic programming, and backtracking — all animated step by step.",
+    "Step-by-step algorithm visualizations. Watch Bubble Sort, Dijkstra's Algorithm, BFS, and DFS run in real-time to understand the logic.",
   keywords: [
     "algorithm visualizer",
     "sorting visualizer",
@@ -19,17 +19,17 @@ export const metadata: Metadata = {
     canonical: "https://www.codevisualizer.app/algorithms",
   },
   openGraph: {
-    title: "Algorithm Visualizer — Sorting, Searching, Pathfinding & More",
+    title: "Algorithm Visualizer - Sorting, Searching & Pathfinding",
     description:
-      "Watch algorithms in action with real-time animations. Sorting, searching, graph traversal, DP, and backtracking visualized step by step.",
+      "Step-by-step algorithm visualizations. Watch Bubble Sort, Dijkstra's Algorithm, BFS, and DFS run in real-time.",
     url: "https://www.codevisualizer.app/algorithms",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Algorithm Visualizer — Interactive Algorithm Animations",
+    title: "Algorithm Visualizer - Sorting, Searching & Pathfinding",
     description:
-      "Visualize sorting, searching, pathfinding, and dynamic programming algorithms step by step.",
+      "Step-by-step algorithm visualizations. Watch sorting, searching, and pathfinding algorithms run in real-time.",
   },
 };
 

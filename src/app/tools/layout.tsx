@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Developer Tools — Big-O Calculator, Regex Tester, Bit Manipulation",
+  title: "Developer Tools for Coding & Debugging",
   description:
-    "Free interactive developer tools: Big-O complexity chart, regex playground with real-time matching, bit manipulation visualizer, and code complexity analyzer — all in your browser.",
+    "Essential tools for developers: Regex tester, JSON formatter, Time complexity analyzer, and code converters.",
   keywords: [
     "big o chart",
     "big o calculator",
@@ -18,17 +18,17 @@ export const metadata: Metadata = {
     canonical: "https://www.codevisualizer.app/tools",
   },
   openGraph: {
-    title: "Developer Tools — Big-O, Regex, Bit Manipulation & More",
+    title: "Developer Tools for Coding & Debugging",
     description:
-      "Interactive developer tools: Big-O chart, regex tester, bit manipulation, and complexity analyzer.",
+      "Essential tools for developers: Regex tester, JSON formatter, Time complexity analyzer, and code converters.",
     url: "https://www.codevisualizer.app/tools",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Developer Tools — Interactive Programming Utilities",
+    title: "Developer Tools for Coding & Debugging",
     description:
-      "Big-O chart, regex playground, bit manipulation, and code complexity analyzer.",
+      "Essential tools for developers: Regex tester, Time complexity analyzer, and code converters.",
   },
 };
 

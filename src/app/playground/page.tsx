@@ -227,6 +227,9 @@ export default function PlaygroundPage() {
 
   return (
     <div className="h-[calc(100vh-3.5rem)] flex flex-col">
+      {/* SEO H1 — visually hidden but accessible to crawlers */}
+      <h1 className="sr-only">Interactive Code Playground</h1>
+
       {/* Top bar */}
       <div className="flex items-center gap-2 px-3 py-2 border-b border-border bg-surface">
         <LanguageSelector />
@@ -255,6 +258,22 @@ export default function PlaygroundPage() {
           <VisualizerPanel />
         </Panel>
       </Group>
+
+      {/* SEO Content Section — provides crawlable text for search engines */}
+      <section id="seo-content" className="px-6 py-8 border-t border-border bg-surface">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-lg font-semibold text-foreground mb-3">About the Code Playground</h2>
+          <p className="text-sm text-muted leading-relaxed">
+            Code Visualizer&apos;s interactive playground lets you write, run, and visualize code execution 
+            in real-time. Paste any JavaScript, Python, C++, or Java snippet and watch as the call stack 
+            grows, variables change, and memory is allocated — step by step. Set breakpoints, step over 
+            function calls, and inspect the full program state at any point. Whether you&apos;re studying 
+            Big O notation, debugging a tricky algorithm, or learning through visual learning, this 
+            code debugger makes complex execution flows easy to understand. Perfect for coding interviews, 
+            CS courses, and everyday development.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

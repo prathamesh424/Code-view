@@ -1,6 +1,6 @@
 {
-  "name": "CodeView — Interactive Code Visualizer",
-  "short_name": "CodeView",
+  "name": "Code Visualizer — Interactive Code Visualizer",
+  "short_name": "Code Visualizer",
   "description": "Interactive code execution visualizer and debugger. Visualize the event loop, call stack, memory, and more for JavaScript, Python, C++, and Java.",
   "start_url": "/",
   "display": "standalone",

@@ -113,7 +113,7 @@ export default function JavaVisualizerPage() {
             essential for writing efficient code and acing technical interviews.
           </p>
           <p className="text-muted leading-relaxed">
-            CodeView shows you every step: from object creation to garbage
+            Code Visualizer shows you every step: from object creation to garbage
             collection, from method dispatch to exception handling. See the
             JVM as it truly works.
           </p>

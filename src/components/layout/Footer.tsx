@@ -36,7 +36,7 @@ export function Footer() {
               <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
                 <Code2 className="w-4 h-4 text-accent" />
               </div>
-              <span className="font-bold text-lg gradient-text">CodeView</span>
+              <span className="font-bold text-lg gradient-text">Code Visualizer</span>
             </Link>
             <p className="text-sm text-muted leading-relaxed">
               Interactive code execution visualizer and debugger. Understand how
@@ -105,7 +105,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted">
-            &copy; {new Date().getFullYear()} CodeView. Built with Next.js,
+            &copy; {new Date().getFullYear()} Code Visualizer. Built with Next.js,
             Monaco Editor, and Framer Motion.
           </p>
           <div className="flex items-center gap-4 text-xs text-muted">
