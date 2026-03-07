@@ -54,7 +54,7 @@ export default function DataStructuresPage() {
         </div>
 
         {/* DS Selection Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 mb-8">
+        <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2 mb-8 sm:grid sm:grid-cols-4 lg:grid-cols-7 sm:overflow-x-visible sm:pb-0">
           {DS_OPTIONS.map((option) => {
             const Icon = option.icon;
             return (
@@ -62,7 +62,7 @@ export default function DataStructuresPage() {
                 key={option.id}
                 onClick={() => setSelected(option.id)}
                 className={cn(
-                  'flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200',
+                  'flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200 flex-shrink-0 min-w-[80px] sm:min-w-0',
                   selected === option.id
                     ? 'bg-accent/10 border-accent text-accent shadow-lg shadow-accent/5'
                     : 'bg-surface border-border text-muted hover:text-foreground hover:border-border-hover hover:bg-surface-secondary'
@@ -82,12 +82,12 @@ export default function DataStructuresPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <div className="flex items-center justify-between mb-4 bg-surface rounded-xl border border-border px-5 py-3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 bg-surface rounded-xl border border-border px-4 sm:px-5 py-3">
             <div>
               <h2 className="text-xl font-bold text-foreground">{selectedInfo.label}</h2>
               <p className="text-xs text-muted mt-0.5">{selectedInfo.description}</p>
             </div>
-            <div className="hidden sm:block px-3 py-1.5 rounded-lg bg-accent/5 border border-accent/20">
+            <div className="px-3 py-1.5 rounded-lg bg-accent/5 border border-accent/20 flex-shrink-0">
               <span className="text-xs font-mono text-accent">{selectedInfo.complexity}</span>
             </div>
           </div>

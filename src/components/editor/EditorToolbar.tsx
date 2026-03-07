@@ -35,27 +35,27 @@ export function EditorToolbar({
   const { steps, currentStepIndex } = useVisualizerStore();
 
   return (
-    <div className="flex items-center gap-2 px-3 py-2 border-b border-border bg-surface">
+    <div className="flex items-center gap-1.5 sm:gap-2 px-1 sm:px-3 py-1 sm:py-2 border-b border-border bg-surface flex-wrap">
       {/* Run / Pause / Resume */}
       {!isRunning ? (
         <Tooltip content="Run (Ctrl+Enter)">
           <Button size="sm" variant="primary" onClick={onRun}>
             <Play className="w-3.5 h-3.5 fill-current" />
-            Run
+            <span className="hidden sm:inline">Run</span>
           </Button>
         </Tooltip>
       ) : isPaused ? (
         <Tooltip content="Resume">
           <Button size="sm" variant="primary" onClick={onResume}>
             <Play className="w-3.5 h-3.5 fill-current" />
-            Resume
+            <span className="hidden sm:inline">Resume</span>
           </Button>
         </Tooltip>
       ) : (
         <Tooltip content="Pause">
           <Button size="sm" variant="secondary" onClick={onPause}>
             <Pause className="w-3.5 h-3.5" />
-            Pause
+            <span className="hidden sm:inline">Pause</span>
           </Button>
         </Tooltip>
       )}
@@ -82,10 +82,10 @@ export function EditorToolbar({
       </Tooltip>
 
       {/* Divider */}
-      <div className="w-px h-5 bg-border mx-1" />
+      <div className="w-px h-5 bg-border mx-0.5 sm:mx-1 hidden sm:block" />
 
       {/* Speed control */}
-      <div className="flex items-center gap-1.5">
+      <div className="hidden sm:flex items-center gap-1.5">
         <span className="text-xs text-muted">Speed:</span>
         {EXECUTION_SPEEDS.map((s) => (
           <button
@@ -106,12 +106,13 @@ export function EditorToolbar({
       {/* Step counter */}
       {steps.length > 0 && (
         <>
-          <div className="w-px h-5 bg-border mx-1" />
-          <span className="text-xs text-muted">
-            Step {currentStepIndex + 1} / {steps.length}
+          <div className="w-px h-5 bg-border mx-0.5 sm:mx-1" />
+          <span className="text-xs text-muted whitespace-nowrap">
+            <span className="hidden sm:inline">Step </span>{currentStepIndex + 1}/{steps.length}
           </span>
         </>
       )}
     </div>
   );
 }
+

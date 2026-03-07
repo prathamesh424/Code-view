@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Panel,
   Group,
@@ -15,7 +15,8 @@ import { VisualizerPanel } from '@/components/visualizer/VisualizerPanel';
 import { JSEngine } from '@/lib/engines/js-engine';
 import { PythonEngine } from '@/lib/engines/python-engine';
 import { APIEngine } from '@/lib/engines/api-engine';
-import { GripVertical } from 'lucide-react';
+import { GripVertical, GripHorizontal, X } from 'lucide-react';
+import { useMediaQuery } from '@/lib/useMediaQuery';
 import type { ExecutionStep, EngineState, Language } from '@/types/engine';
 
 function createEngine(language: Language) {
@@ -61,6 +62,9 @@ export default function PlaygroundPage() {
   const abortRef = useRef(false);
   const pauseRef = useRef(false);
   const stepResolveRef = useRef<(() => void) | null>(null);
+
+  const isMobile = useMediaQuery('(max-width: 767px)');
+  const [seoHidden, setSeoHidden] = useState(false);
 
   // Sync pause state to ref
   useEffect(() => {
@@ -231,9 +235,9 @@ export default function PlaygroundPage() {
       <h1 className="sr-only">Interactive Code Playground</h1>
 
       {/* Top bar */}
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-border bg-surface">
+      <div className="flex items-center gap-2 px-2 sm:px-3 py-2 border-b border-border bg-surface flex-wrap">
         <LanguageSelector />
-        <div className="h-5 w-px bg-border" />
+        <div className="h-5 w-px bg-border hidden sm:block" />
         <EditorToolbar
           onRun={handleRun}
           onPause={handlePause}
@@ -244,36 +248,50 @@ export default function PlaygroundPage() {
         />
       </div>
 
-      {/* Split panels */}
-      <Group orientation="horizontal" className="flex-1">
-        <Panel defaultSize={50} minSize={30}>
+      {/* Split panels — vertical on mobile, horizontal on desktop */}
+      <Group orientation={isMobile ? 'vertical' : 'horizontal'} className="flex-1">
+        <Panel defaultSize={isMobile ? 40 : 50} minSize={isMobile ? 20 : 30}>
           <CodeEditor />
         </Panel>
 
-        <Separator className="w-1.5 bg-border/50 hover:bg-accent/50 transition-colors flex items-center justify-center group">
-          <GripVertical className="w-3 h-3 text-muted group-hover:text-accent transition-colors" />
+        <Separator className={`${isMobile ? 'h-2 cursor-row-resize' : 'w-1.5'} bg-border/50 hover:bg-accent/50 transition-colors flex items-center justify-center group`}>
+          {isMobile ? (
+            <GripHorizontal className="w-4 h-4 text-muted group-hover:text-accent transition-colors" />
+          ) : (
+            <GripVertical className="w-3 h-3 text-muted group-hover:text-accent transition-colors" />
+          )}
         </Separator>
 
-        <Panel defaultSize={50} minSize={30}>
+        <Panel defaultSize={isMobile ? 60 : 50} minSize={isMobile ? 20 : 30}>
           <VisualizerPanel />
         </Panel>
       </Group>
 
-      {/* SEO Content Section — provides crawlable text for search engines */}
-      <section id="seo-content" className="px-6 py-8 border-t border-border bg-surface">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-lg font-semibold text-foreground mb-3">About the Code Playground</h2>
-          <p className="text-sm text-muted leading-relaxed">
-            Code Visualizer&apos;s interactive playground lets you write, run, and visualize code execution 
-            in real-time. Paste any JavaScript, Python, C++, or Java snippet and watch as the call stack 
-            grows, variables change, and memory is allocated — step by step. Set breakpoints, step over 
-            function calls, and inspect the full program state at any point. Whether you&apos;re studying 
-            Big O notation, debugging a tricky algorithm, or learning through visual learning, this 
-            code debugger makes complex execution flows easy to understand. Perfect for coding interviews, 
-            CS courses, and everyday development.
-          </p>
-        </div>
-      </section>
+      {/* SEO Content Section — hidden on mobile, dismissible on desktop */}
+      {!isMobile && !seoHidden && (
+        <section id="seo-content" className="px-6 py-6 border-t border-border bg-surface relative">
+          <button
+            onClick={() => setSeoHidden(true)}
+            className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-surface-secondary text-muted hover:text-foreground transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-lg font-semibold text-foreground mb-3">About the Code Playground</h2>
+            <p className="text-sm text-muted leading-relaxed">
+              Code Visualizer&apos;s interactive playground lets you write, run, and visualize code execution 
+              in real-time. Paste any JavaScript, Python, C++, or Java snippet and watch as the call stack 
+              grows, variables change, and memory is allocated — step by step. Set breakpoints, step over 
+              function calls, and inspect the full program state at any point. Whether you&apos;re studying 
+              Big O notation, debugging a tricky algorithm, or learning through visual learning, this 
+              code debugger makes complex execution flows easy to understand. Perfect for coding interviews, 
+              CS courses, and everyday development.
+            </p>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
+

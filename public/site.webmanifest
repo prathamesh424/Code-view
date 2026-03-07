@@ -1,36 +1,21 @@
 {
-  "name": "Code Visualizer — Interactive Code Visualizer",
-  "short_name": "Code Visualizer",
-  "description": "Interactive code execution visualizer and debugger. Visualize the event loop, call stack, memory, and more for JavaScript, Python, C++, and Java.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#0b0d17",
-  "theme_color": "#818cf8",
-  "orientation": "any",
-  "categories": ["developer tools", "education", "productivity"],
-  "lang": "en",
+  "name": "Code Visualizer",
+  "short_name": "CodeVisualizer",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "sizes": "48x48",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
-    },
-    {
-      "src": "/icon-192.png",
+      "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
 }

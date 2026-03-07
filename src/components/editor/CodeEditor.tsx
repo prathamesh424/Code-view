@@ -6,6 +6,7 @@ import type { OnMount } from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import { useEditorStore } from '@/stores/editor-store';
 import { MONACO_LANGUAGE_MAP } from '@/lib/constants';
+import { useMediaQuery } from '@/lib/useMediaQuery';
 
 // Dynamic import of Monaco editor — reduces initial JS bundle by ~800KB
 const Editor = dynamic(() => import('@monaco-editor/react').then((mod) => mod.default), {
@@ -28,6 +29,7 @@ export function CodeEditor() {
   const { code, setCode, language, breakpoints, toggleBreakpoint, currentLine } =
     useEditorStore();
   const { resolvedTheme } = useTheme();
+  const isMobile = useMediaQuery('(max-width: 767px)');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editorRef = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -140,13 +142,13 @@ export function CodeEditor() {
           onMount={handleEditorMount}
           theme={resolvedTheme === 'dark' ? 'vs-dark' : 'vs'}
           options={{
-            fontSize: 14,
+            fontSize: isMobile ? 12 : 14,
             fontFamily: '"JetBrains Mono", "Fira Code", "Cascadia Code", monospace',
             fontLigatures: true,
             minimap: { enabled: false },
-            lineNumbers: 'on',
-            glyphMargin: true,
-            folding: true,
+            lineNumbers: isMobile ? 'off' : 'on',
+            glyphMargin: !isMobile,
+            folding: !isMobile,
             scrollBeyondLastLine: false,
             automaticLayout: true,
             tabSize: 2,
@@ -165,3 +167,4 @@ export function CodeEditor() {
     </div>
   );
 }
+

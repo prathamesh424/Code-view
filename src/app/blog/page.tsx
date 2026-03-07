@@ -91,8 +91,8 @@ export default function BlogPage() {
               <p className="text-sm text-muted leading-relaxed mb-4">
                 {post.description}
               </p>
-              <div className="flex items-center justify-between">
-                <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag) => (
                     <span
                       key={tag}
@@ -102,7 +102,7 @@ export default function BlogPage() {
                     </span>
                   ))}
                 </div>
-                <span className="text-accent text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                <span className="text-accent text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all flex-shrink-0">
                   Read more <ArrowRight className="w-3 h-3" />
                 </span>
               </div>

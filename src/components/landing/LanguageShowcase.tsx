@@ -46,13 +46,13 @@ export function LanguageShowcase() {
 
         {/* Language tabs */}
         <div className="flex justify-center mb-12">
-          <div className="flex items-center gap-2 p-1 bg-surface rounded-xl border border-border">
+          <div className="flex items-center gap-2 p-1 bg-surface rounded-xl border border-border overflow-x-auto scrollbar-hide max-w-full">
             {LANGUAGES.map((lang) => (
               <button
                 key={lang.id}
                 onClick={() => setActive(lang.id)}
                 className={cn(
-                  'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer',
+                  'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap flex-shrink-0',
                   active === lang.id
                     ? 'bg-accent text-white shadow-sm'
                     : 'text-muted hover:text-foreground hover:bg-surface-secondary'
