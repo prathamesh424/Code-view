@@ -2,7 +2,29 @@ import type { MetadataRoute } from "next";
 
 const SITE_URL = "https://www.codevisualizer.app";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+async function fetchUserBlogSlugs(): Promise<Array<{ slug: string; createdAt: number }>> {
+  const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
+  if (!convexUrl) return [];
+  try {
+    const res = await fetch(`${convexUrl}/api/query`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        path: "userBlogs:listForSitemap",
+        args: {},
+        format: "json",
+      }),
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.value ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
   const staticPages = [
@@ -30,7 +52,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "/blog/stack-vs-heap", changeFrequency: "monthly" as const, priority: 0.75, lastModified: "2026-02-25" },
   ];
 
-  const allPages = [...staticPages, ...visualizerPages, ...blogPages];
+  // Dynamically fetch user-submitted blog slugs
+  const userBlogs = await fetchUserBlogSlugs();
+  const userBlogPages = userBlogs.map((b) => ({
+    url: `/blog/${b.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+    lastModified: new Date(b.createdAt).toISOString(),
+  }));
+
+  const allPages = [...staticPages, ...visualizerPages, ...blogPages, ...userBlogPages];
 
   return allPages.map((page) => ({
     url: `${SITE_URL}${page.url}`,

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Code2, Play, Menu, X, Database, BarChart3, Wrench, Trophy, BookOpen, Home } from 'lucide-react';
+import { Code2, Play, Menu, X, Database, BarChart3, Wrench, Trophy, BookOpen, Home, MessageSquare } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { href: '/tools', label: 'Tools', icon: Wrench },
   { href: '/challenges', label: 'Challenges', icon: Trophy },
   { href: '/blog', label: 'Blog', icon: BookOpen },
+  { href: '/feedback', label: 'Feedback', icon: MessageSquare },
 ];
 
 export function Header() {

@@ -2,6 +2,7 @@
 
 import { Trophy } from 'lucide-react';
 import { CodeChallengesVisualizer } from '@/components/visualizer-tools/challenges/CodeChallengesVisualizer';
+import { UserChallenges } from '@/components/visualizer-tools/challenges/UserChallenges';
 
 export default function ChallengesPage() {
   return (
@@ -19,6 +20,7 @@ export default function ChallengesPage() {
         </div>
 
         <CodeChallengesVisualizer />
+        <UserChallenges />
       </div>
     </div>
   );

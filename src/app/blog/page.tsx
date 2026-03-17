@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookOpen, Clock, ArrowRight } from "lucide-react";
+import { BlogCommunitySection } from './BlogCommunitySection';
 
 export const metadata: Metadata = {
   title: "CodeVisualizer Blog - Tutorials & CS Concepts",
@@ -109,6 +110,8 @@ export default function BlogPage() {
             </Link>
           ))}
         </div>
+
+        <BlogCommunitySection />
       </div>
     </div>
   );
