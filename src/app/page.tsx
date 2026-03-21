@@ -1,14 +1,22 @@
 import { Hero } from '@/components/landing/Hero';
 import { Features } from '@/components/landing/Features';
 import { LanguageShowcase } from '@/components/landing/LanguageShowcase';
+import { InteractiveDemo } from '@/components/landing/InteractiveDemo';
+import { PopularVisualizations } from '@/components/landing/PopularVisualizations';
+import { ContinueSection } from '@/components/landing/ContinueSection';
+import { ExploreCTAs } from '@/components/landing/ExploreCTAs';
 import Link from 'next/link';
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       <Hero />
+      <InteractiveDemo />
+      <PopularVisualizations />
       <Features />
       <LanguageShowcase />
+      <ContinueSection />
+      <ExploreCTAs />
 
       {/* Internal Links Section for SEO */}
       <section className="py-16 border-t border-border">

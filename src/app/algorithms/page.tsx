@@ -3,7 +3,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BarChart3, Search, Map, ArrowUpDown, GitBranch, Table2, Type, Undo2, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { buildPlaygroundUrl, getExampleById } from '@/lib/examples';
 import { SortingVisualizer } from '@/components/visualizer-tools/algorithms/SortingVisualizer';
 import { SearchingVisualizer } from '@/components/visualizer-tools/algorithms/SearchingVisualizer';
 import { PathfindingVisualizer } from '@/components/visualizer-tools/algorithms/PathfindingVisualizer';
@@ -83,6 +85,8 @@ export default function AlgorithmsPage() {
   const SelectedComponent = ALGO_COMPONENTS[selected];
   const selectedOption = ALGO_OPTIONS.find((o) => o.id === selected)!;
   const SelectedIcon = selectedOption.icon;
+  const quickSortExample = getExampleById('quick-sort');
+  const bubbleSortExample = getExampleById('bubble-sort');
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -107,6 +111,30 @@ export default function AlgorithmsPage() {
           <p className="text-muted text-sm">
             Watch algorithms in action with real-time animations. Adjust speed, change inputs, and compare different approaches.
           </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {bubbleSortExample && (
+              <Link
+                href={buildPlaygroundUrl(bubbleSortExample)}
+                className="px-3 py-2 rounded-lg bg-accent text-white text-sm font-medium hover:bg-accent-hover transition-colors"
+              >
+                Visualize this algorithm
+              </Link>
+            )}
+            {quickSortExample && (
+              <Link
+                href={buildPlaygroundUrl(quickSortExample)}
+                className="px-3 py-2 rounded-lg border border-border text-sm text-muted hover:text-foreground hover:border-accent transition-colors"
+              >
+                Try this example
+              </Link>
+            )}
+            <Link
+              href="/examples"
+              className="px-3 py-2 rounded-lg border border-border text-sm text-muted hover:text-foreground hover:border-accent transition-colors"
+            >
+              Run in playground
+            </Link>
+          </div>
         </div>
 
         {/* Sticky Category Dropdown */}

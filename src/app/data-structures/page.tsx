@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Database, List, Layers, GitBranch, Share2, Hash, ArrowUpDown } from 'lucide-react';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { buildPlaygroundUrl, getExampleById } from '@/lib/examples';
 import { ArrayVisualizer } from '@/components/visualizer-tools/data-structures/ArrayVisualizer';
 import { LinkedListVisualizer } from '@/components/visualizer-tools/data-structures/LinkedListVisualizer';
 import { StackQueueVisualizer } from '@/components/visualizer-tools/data-structures/StackQueueVisualizer';
@@ -38,6 +40,8 @@ export default function DataStructuresPage() {
   const [selected, setSelected] = useState<DSOption>('array');
   const SelectedComponent = DS_COMPONENTS[selected];
   const selectedInfo = DS_OPTIONS.find(o => o.id === selected)!;
+  const stackExample = getExampleById('stack');
+  const treeExample = getExampleById('binary-tree');
 
   return (
     <div className="min-h-screen bg-background">
@@ -51,6 +55,30 @@ export default function DataStructuresPage() {
           <p className="text-muted text-sm">
             Interactive visualizations of fundamental data structures. Observe operations in real-time with step-by-step animations.
           </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {stackExample && (
+              <Link
+                href={buildPlaygroundUrl(stackExample)}
+                className="px-3 py-2 rounded-lg bg-accent text-white text-sm font-medium hover:bg-accent-hover transition-colors"
+              >
+                Visualize this algorithm
+              </Link>
+            )}
+            {treeExample && (
+              <Link
+                href={buildPlaygroundUrl(treeExample)}
+                className="px-3 py-2 rounded-lg border border-border text-sm text-muted hover:text-foreground hover:border-accent transition-colors"
+              >
+                Try this example
+              </Link>
+            )}
+            <Link
+              href="/playground"
+              className="px-3 py-2 rounded-lg border border-border text-sm text-muted hover:text-foreground hover:border-accent transition-colors"
+            >
+              Run in playground
+            </Link>
+          </div>
         </div>
 
         {/* DS Selection Grid */}

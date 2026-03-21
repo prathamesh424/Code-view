@@ -37,6 +37,11 @@ export class JSEngine {
   private onStepCallback: ((step: ExecutionStep, state: JSEngineState) => void) | null = null;
   private speed = 1;
 
+  // Control flow signals
+  private returnSignal: { value: unknown } | null = null;
+  private breakSignal = false;
+  private continueSignal = false;
+
   constructor() {
     this.globalScope = { variables: new Map(), parent: null, name: 'global' };
   }
@@ -117,7 +122,16 @@ export class JSEngine {
         for (const child of node.body as ASTNode[]) {
           if (!this.running) break;
           await this.executeNode(child, scope);
+          if (this.returnSignal || this.breakSignal || this.continueSignal) {
+            break;
+          }
         }
+        return undefined;
+      case 'BreakStatement':
+        this.breakSignal = true;
+        return undefined;
+      case 'ContinueStatement':
+        this.continueSignal = true;
         return undefined;
       default:
         return undefined;
@@ -175,6 +189,7 @@ export class JSEngine {
       value = await this.evaluateExpression(node.argument, scope);
     }
     await this.emitStep(line, 'return', `return ${this.stringify(value)}`);
+    this.returnSignal = { value };
     return value;
   }
 
@@ -214,6 +229,9 @@ export class JSEngine {
       }
       await this.emitStep(line, 'loop', `for loop iteration ${iterations + 1}`);
       await this.executeNode(node.body, loopScope);
+      if (this.returnSignal) break;
+      if (this.breakSignal) { this.breakSignal = false; break; }
+      if (this.continueSignal) { this.continueSignal = false; }
       if (node.update) {
         await this.evaluateExpression(node.update, loopScope);
       }
@@ -233,6 +251,9 @@ export class JSEngine {
       if (!test) break;
       await this.emitStep(line, 'loop', `while loop iteration ${iterations + 1}`);
       await this.executeNode(node.body, scope);
+      if (this.returnSignal) break;
+      if (this.breakSignal) { this.breakSignal = false; break; }
+      if (this.continueSignal) { this.continueSignal = false; }
       iterations++;
     }
   }
@@ -279,12 +300,24 @@ export class JSEngine {
       case 'TemplateLiteral':
         return this.evaluateTemplateLiteral(node, scope);
 
-      case 'ArrayExpression':
-        return Promise.all(
-          (node.elements as ASTNode[]).map((el) =>
-            el ? this.evaluateExpression(el, scope) : undefined
-          )
-        );
+case 'ArrayExpression': {
+          const arr: unknown[] = [];
+          for (const el of node.elements as ASTNode[]) {
+            if (!el) {
+              arr.push(undefined);
+            } else if (el.type === 'SpreadElement') {
+              const spread = await this.evaluateExpression(el.argument, scope);
+              if (Array.isArray(spread)) {
+                arr.push(...spread);
+              } else {
+                arr.push(spread);
+              }
+            } else {
+              arr.push(await this.evaluateExpression(el, scope));
+            }
+          }
+          return arr;
+        }
 
       case 'ObjectExpression': {
         const obj: Record<string, unknown> = {};
@@ -355,13 +388,50 @@ export class JSEngine {
 
   private async evaluateAssignment(node: ASTNode, scope: Scope): Promise<unknown> {
     const value = await this.evaluateExpression(node.right, scope);
-    if (node.left.type === 'Identifier') {
-      this.setVariable(node.left.name, value, scope);
+      
+      const assignToPattern = async (left: ASTNode, rightValue: unknown) => {
+        if (left.type === 'Identifier') {
+          this.setVariable(left.name, rightValue, scope);
+        } else if (left.type === 'MemberExpression') {
+          const obj = await this.evaluateExpression(left.object, scope);
+          let prop;
+          if (left.computed) {
+            prop = await this.evaluateExpression(left.property, scope);
+          } else {
+            prop = left.property.name;
+          }
+          if (obj && (typeof obj === 'object' || typeof obj === 'function')) {
+            (obj as Record<string, unknown>)[prop as string] = rightValue;
+          }
+        } else if (left.type === 'ArrayPattern') {
+          if (Array.isArray(rightValue)) {
+            for (let i = 0; i < left.elements.length; i++) {
+              if (left.elements[i]) {
+                await assignToPattern(left.elements[i], rightValue[i]);
+              }
+            }
+          }
+        }
+      };
+
+      await assignToPattern(node.left, value);
+
       const line = node.loc?.start?.line ?? 1;
-      await this.emitStep(line, 'assignment', `${node.left.name} = ${this.stringify(value)}`);
+      let desc = 'assignment';
+      if (node.left.type === 'Identifier') {
+        desc = `${node.left.name} = ${this.stringify(value)}`;
+      } else if (node.left.type === 'MemberExpression') {
+        const propName = node.left.computed ? '[...]' : `.${node.left.property.name}`;
+        desc = `Assign to object property ${propName} = ${this.stringify(value)}`;
+      } else if (node.left.type === 'ArrayPattern') {
+        desc = `Destructuring assignment = ${this.stringify(value)}`;
+      }
+      
+      await this.emitStep(line, 'assignment', desc);
+      return value;
     }
-    return value;
-  }
+
+  private async evaluateArguments(argsNodes: ASTNode[], scope: Scope): Promise<unknown[]> { const args: unknown[] = []; for (const argNode of argsNodes) { if (argNode.type === 'SpreadElement') { const spread = await this.evaluateExpression(argNode.argument, scope); if (Array.isArray(spread)) { args.push(...spread); } else { args.push(spread); } } else { args.push(await this.evaluateExpression(argNode, scope)); } } return args; }
 
   private async evaluateCallExpression(node: ASTNode, scope: Scope): Promise<unknown> {
     const line = node.loc?.start?.line ?? 1;
@@ -373,9 +443,7 @@ export class JSEngine {
       node.callee.object.name === 'console'
     ) {
       const method = node.callee.property.name as 'log' | 'error' | 'warn' | 'info';
-      const args = await Promise.all(
-        (node.arguments as ASTNode[]).map((arg) => this.evaluateExpression(arg, scope))
-      );
+      const args = await this.evaluateArguments(node.arguments as ASTNode[], scope);
       const output = args.map((a) => this.stringify(a)).join(' ');
       this.addConsoleEntry(method === 'log' ? 'log' : method, output);
       await this.emitStep(line, 'output', `console.${method}(${output})`);
@@ -432,9 +500,7 @@ export class JSEngine {
       node.callee.object.name === 'Promise' &&
       node.callee.property.name === 'resolve'
     ) {
-      const args = await Promise.all(
-        (node.arguments as ASTNode[]).map((arg) => this.evaluateExpression(arg, scope))
-      );
+      const args = await this.evaluateArguments(node.arguments as ASTNode[], scope);
       await this.emitStep(line, 'expression', `Promise.resolve(${args.map(a => this.stringify(a)).join(', ')})`);
       return { __isPromise: true, value: args[0], thenCallbacks: [], scope };
     }
@@ -464,10 +530,23 @@ export class JSEngine {
       return { __isPromise: true, value: undefined, thenCallbacks: [item.id], scope };
     }
 
-    // Handle user-defined function calls
-    const callee = node.callee.type === 'Identifier'
-      ? this.lookupVariable(node.callee.name, scope)
-      : await this.evaluateExpression(node.callee, scope);
+      let callee;
+      let thisArg: unknown = undefined;
+
+      if (node.callee.type === 'MemberExpression') {
+        thisArg = await this.evaluateExpression(node.callee.object, scope);
+        const prop = node.callee.computed
+          ? await this.evaluateExpression(node.callee.property, scope)
+          : (node.callee.property as Record<string, unknown>).name;
+        
+        if (thisArg != null) {
+          callee = (thisArg as Record<string, unknown>)[prop as string];
+        }
+      } else if (node.callee.type === 'Identifier') {
+        callee = this.lookupVariable(node.callee.name, scope);
+      } else {
+        callee = await this.evaluateExpression(node.callee, scope);
+      }
 
     if (callee && typeof callee === 'object' && '__isFunction' in (callee as Record<string, unknown>)) {
       const fn = callee as {
@@ -477,9 +556,7 @@ export class JSEngine {
         body: ASTNode;
         scope: Scope;
       };
-      const args = await Promise.all(
-        (node.arguments as ASTNode[]).map((a) => this.evaluateExpression(a, scope))
-      );
+      const args = await this.evaluateArguments(node.arguments as ASTNode[], scope);
 
       const fnScope: Scope = {
         variables: new Map(),
@@ -502,9 +579,10 @@ export class JSEngine {
       if (fn.body.type === 'BlockStatement') {
         for (const stmt of fn.body.body as ASTNode[]) {
           if (!this.running) break;
-          const r = await this.executeNode(stmt, fnScope);
-          if (stmt.type === 'ReturnStatement') {
-            result = r;
+          await this.executeNode(stmt, fnScope);
+          if (this.returnSignal) {
+            result = this.returnSignal.value;
+            this.returnSignal = null;
             break;
           }
         }
@@ -515,14 +593,20 @@ export class JSEngine {
       this.popFrame();
       await this.emitStep(line, 'return', `${fn.name} returned ${this.stringify(result)}`);
       return result;
+      } else if (typeof callee === 'function') {
+        const args = await this.evaluateArguments(node.arguments as ASTNode[], scope);
+        const result = callee.apply(thisArg, args);
+        const fnName = callee.name || 'native function';
+        await this.emitStep(line, 'call', `Call ${fnName}(...${args.length} args)`);
+        return result;
+      }
+
+      return undefined;
     }
 
-    return undefined;
-  }
-
-  private async evaluateMemberExpression(node: ASTNode, scope: Scope): Promise<unknown> {
-    const obj = (await this.evaluateExpression(node.object, scope)) as Record<string, unknown> | unknown[] | null;
-    if (obj == null) return undefined;
+    private async evaluateMemberExpression(node: ASTNode, scope: Scope): Promise<unknown> {
+      const obj = (await this.evaluateExpression(node.object, scope)) as Record<string, unknown> | unknown[] | null;
+      if (obj == null) return undefined;
 
     const prop = node.computed
       ? ((await this.evaluateExpression(node.property, scope)) as string | number)
@@ -577,6 +661,10 @@ export class JSEngine {
           if (fn.body.type === 'BlockStatement') {
             for (const stmt of fn.body.body as ASTNode[]) {
               await this.executeNode(stmt, fnScope);
+              if (this.returnSignal) {
+                this.returnSignal = null;
+                break;
+              }
             }
           } else {
             await this.evaluateExpression(fn.body, fnScope);
@@ -613,6 +701,10 @@ export class JSEngine {
           if (fn.body.type === 'BlockStatement') {
             for (const stmt of fn.body.body as ASTNode[]) {
               await this.executeNode(stmt, fnScope);
+              if (this.returnSignal) {
+                this.returnSignal = null;
+                break;
+              }
             }
           } else {
             await this.evaluateExpression(fn.body, fnScope);

@@ -12,12 +12,19 @@ import { LanguageSelector } from '@/components/editor/LanguageSelector';
 import { EditorToolbar } from '@/components/editor/EditorToolbar';
 import { CodeEditor } from '@/components/editor/CodeEditor';
 import { VisualizerPanel } from '@/components/visualizer/VisualizerPanel';
+import { SampleSelector } from '@/components/playground/SampleSelector';
+import { ShareVisualization } from '@/components/playground/ShareVisualization';
+import { OnboardingTour } from '@/components/playground/OnboardingTour';
+import { ExecutionTimeline } from '@/components/playground/ExecutionTimeline';
+import { MemorySnapshotPanel } from '@/components/playground/MemorySnapshotPanel';
 import { JSEngine } from '@/lib/engines/js-engine';
 import { PythonEngine } from '@/lib/engines/python-engine';
 import { APIEngine } from '@/lib/engines/api-engine';
-import { GripVertical, GripHorizontal, X } from 'lucide-react';
+import { GripVertical, GripHorizontal, X, Footprints } from 'lucide-react';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import type { ExecutionStep, EngineState, Language } from '@/types/engine';
+import { addRecentVisualization } from '@/lib/user-progress';
+import { getExampleById } from '@/lib/examples';
 
 function createEngine(language: Language) {
   switch (language) {
@@ -45,9 +52,13 @@ export default function PlaygroundPage() {
     setIsRunning,
     setIsPaused,
     setCurrentLine,
+    setCode,
+    setLanguage,
   } = useEditorStore();
 
   const {
+    steps,
+    currentStepIndex,
     addStep,
     setCallStack,
     setVariables,
@@ -65,6 +76,44 @@ export default function PlaygroundPage() {
 
   const isMobile = useMediaQuery('(max-width: 767px)');
   const [seoHidden, setSeoHidden] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlCode = params.get('code');
+    const urlLang = params.get('lang');
+    const exampleId = params.get('example');
+
+    const validLangs: Language[] = ['javascript', 'python', 'c', 'cpp', 'java'];
+    
+    if (exampleId) {
+      const example = getExampleById(exampleId);
+      if (example) {
+        setLanguage(example.language);
+        setCode(example.code);
+        addRecentVisualization({
+          id: exampleId,
+          title: `Example: ${example.title}`,
+          href: `/playground?example=${exampleId}`,
+        });
+        return;
+      }
+    }
+
+    if (urlLang && validLangs.includes(urlLang as Language)) {
+      setLanguage(urlLang as Language);
+    }
+    if (urlCode) {
+      setCode(urlCode);
+    }
+
+    if (urlCode) {
+      addRecentVisualization({
+        id: `custom-${Date.now()}`,
+        title: 'Custom shared visualization',
+        href: `/playground?${params.toString()}`,
+      });
+    }
+  }, [setCode, setLanguage]);
 
   // Sync pause state to ref
   useEffect(() => {
@@ -89,14 +138,23 @@ export default function PlaygroundPage() {
     [language, addStep, setCurrentLine, setCallStack, setVariables, setConsoleOutput, setEngineState]
   );
 
-  const handleRun = useCallback(async () => {
+  useEffect(() => {
+    if (currentStepIndex < 0 || currentStepIndex >= steps.length) return;
+    const step = steps[currentStepIndex];
+    setCurrentLine(step.line);
+    setCallStack(step.callStack);
+    setVariables(step.variables);
+    setConsoleOutput(step.consoleOutput);
+  }, [currentStepIndex, steps, setCurrentLine, setCallStack, setVariables, setConsoleOutput]);
+
+  const handleRun = useCallback(async (startPaused = false) => {
     if (isRunning) return;
 
     resetVisualizer();
     setIsRunning(true);
-    setIsPaused(false);
+    setIsPaused(startPaused);
     abortRef.current = false;
-    pauseRef.current = false;
+    pauseRef.current = startPaused;
 
     const engine = createEngine(language);
     engineRef.current = engine;
@@ -158,6 +216,10 @@ export default function PlaygroundPage() {
     setCurrentStepIndex,
     addConsoleOutput,
   ]);
+
+  const handleRunStepByStep = useCallback(() => {
+    handleRun(true);
+  }, [handleRun]);
 
   const handlePause = useCallback(() => {
     setIsPaused(true);
@@ -237,6 +299,7 @@ export default function PlaygroundPage() {
       {/* Top bar */}
       <div className="flex items-center gap-2 px-2 sm:px-3 py-2 border-b border-border bg-surface flex-wrap">
         <LanguageSelector />
+        <SampleSelector />
         <div className="h-5 w-px bg-border hidden sm:block" />
         <EditorToolbar
           onRun={handleRun}
@@ -246,7 +309,20 @@ export default function PlaygroundPage() {
           onStop={handleStop}
           onReset={handleReset}
         />
+        <button
+          onClick={handleRunStepByStep}
+          className="inline-flex items-center gap-1 px-2 py-1.5 rounded-md border border-border text-xs text-muted hover:text-foreground hover:border-accent transition-colors"
+        >
+          <Footprints className="w-3.5 h-3.5" />
+          Run Step-by-Step
+        </button>
+        <div className="ml-auto">
+          <ShareVisualization />
+        </div>
       </div>
+
+      <ExecutionTimeline />
+      <MemorySnapshotPanel />
 
       {/* Split panels — vertical on mobile, horizontal on desktop */}
       <Group orientation={isMobile ? 'vertical' : 'horizontal'} className="flex-1">
@@ -291,6 +367,8 @@ export default function PlaygroundPage() {
           </div>
         </section>
       )}
+
+      <OnboardingTour />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BookOpen, Clock, ArrowRight } from "lucide-react";
 import { BlogCommunitySection } from './BlogCommunitySection';
+import { buildPlaygroundUrl, getExampleById } from '@/lib/examples';
 
 export const metadata: Metadata = {
   title: "CodeVisualizer Blog - Tutorials & CS Concepts",
@@ -47,6 +48,12 @@ const BLOG_POSTS = [
   },
 ];
 
+const BLOG_TO_EXAMPLE: Record<string, string> = {
+  'javascript-event-loop-explained': 'event-loop',
+  'python-memory-management': 'memory-allocation',
+  'stack-vs-heap': 'recursion',
+};
+
 export default function BlogPage() {
   return (
     <div className="min-h-screen bg-background">
@@ -66,49 +73,73 @@ export default function BlogPage() {
         </div>
 
         <div className="space-y-6">
-          {BLOG_POSTS.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="block p-6 rounded-xl border border-border bg-surface hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 transition-all duration-200 group"
-            >
-              <div className="flex items-center gap-3 text-xs text-muted mb-3">
-                <time dateTime={post.date}>
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </time>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  {post.readTime}
-                </span>
-              </div>
-              <h2 className="text-xl font-bold text-foreground group-hover:text-accent transition-colors mb-2">
-                {post.title}
-              </h2>
-              <p className="text-sm text-muted leading-relaxed mb-4">
-                {post.description}
-              </p>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 rounded-md bg-surface-secondary text-xs text-muted"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+          {BLOG_POSTS.map((post) => {
+            const linkedExample = getExampleById(BLOG_TO_EXAMPLE[post.slug]);
+            return (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="block p-6 rounded-xl border border-border bg-surface hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 transition-all duration-200 group"
+              >
+                <div className="flex items-center gap-3 text-xs text-muted mb-3">
+                  <time dateTime={post.date}>
+                    {new Date(post.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </time>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    {post.readTime}
+                  </span>
                 </div>
-                <span className="text-accent text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all flex-shrink-0">
-                  Read more <ArrowRight className="w-3 h-3" />
-                </span>
-              </div>
-            </Link>
-          ))}
+                <h2 className="text-xl font-bold text-foreground group-hover:text-accent transition-colors mb-2">
+                  {post.title}
+                </h2>
+                <p className="text-sm text-muted leading-relaxed mb-4">
+                  {post.description}
+                </p>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div className="flex flex-wrap gap-2">
+                    {post.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-0.5 rounded-md bg-surface-secondary text-xs text-muted"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {linkedExample && (
+                      <span className="px-2 py-1 rounded-md border border-border text-xs text-muted">Try this example</span>
+                    )}
+                    <span className="text-accent text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all flex-shrink-0">
+                      Read more <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-2">
+          {BLOG_POSTS.map((post) => {
+            const linkedExample = getExampleById(BLOG_TO_EXAMPLE[post.slug]);
+            if (!linkedExample) return null;
+            return (
+              <Link
+                key={`play-${post.slug}`}
+                href={buildPlaygroundUrl(linkedExample)}
+                className="px-3 py-2 rounded-lg border border-border text-sm text-muted hover:text-foreground hover:border-accent transition-colors"
+              >
+                Run in playground: {post.title.split(' ')[0]}
+              </Link>
+            );
+          })}
         </div>
 
         <BlogCommunitySection />

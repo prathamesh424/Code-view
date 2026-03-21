@@ -38,10 +38,10 @@ export function EditorToolbar({
     <div className="flex items-center gap-1.5 sm:gap-2 px-1 sm:px-3 py-1 sm:py-2 border-b border-border bg-surface flex-wrap">
       {/* Run / Pause / Resume */}
       {!isRunning ? (
-        <Tooltip content="Run (Ctrl+Enter)">
+        <Tooltip content="Visualize Execution (Ctrl+Enter)">
           <Button size="sm" variant="primary" onClick={onRun}>
             <Play className="w-3.5 h-3.5 fill-current" />
-            <span className="hidden sm:inline">Run</span>
+            <span className="hidden sm:inline">Visualize Execution</span>
           </Button>
         </Tooltip>
       ) : isPaused ? (
