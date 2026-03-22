@@ -18,6 +18,7 @@ export default defineSchema({
 
   userChallenges: defineTable({
     title: v.string(),
+    slug: v.optional(v.string()),
     difficulty: v.union(
       v.literal("easy"),
       v.literal("medium"),
@@ -33,9 +34,22 @@ export default defineSchema({
         description: v.string(),
       })
     ),
+    examples: v.optional(
+      v.array(
+        v.object({
+          input: v.string(),
+          output: v.string(),
+          explanation: v.optional(v.string()),
+        })
+      )
+    ),
+    hints: v.optional(v.array(v.string())),
+    solution: v.optional(v.string()),
     authorName: v.string(),
     createdAt: v.number(),
-  }).index("by_createdAt", ["createdAt"]),
+  })
+    .index("by_createdAt", ["createdAt"])
+    .index("by_slug", ["slug"]),
 
   userBlogs: defineTable({
     title: v.string(),

@@ -9,8 +9,10 @@
  */
 
 import type * as feedback from "../feedback.js";
+import type * as seed from "../seed.js";
 import type * as userBlogs from "../userBlogs.js";
 import type * as userChallenges from "../userChallenges.js";
+import type * as wipe from "../wipe.js";
 
 import type {
   ApiFromModules,
@@ -20,8 +22,10 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   feedback: typeof feedback;
+  seed: typeof seed;
   userBlogs: typeof userBlogs;
   userChallenges: typeof userChallenges;
+  wipe: typeof wipe;
 }>;
 
 /**

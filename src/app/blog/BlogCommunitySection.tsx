@@ -2,20 +2,10 @@
 
 import { useState } from 'react';
 import { Plus, PenLine } from 'lucide-react';
-import { UserBlogList, UserBlogReader, BlogEditor } from '@/components/blog/UserBlogs';
+import { UserBlogList, BlogEditor } from '@/components/blog/UserBlogs';
 
 export function BlogCommunitySection() {
   const [showEditor, setShowEditor] = useState(false);
-  const [readingSlug, setReadingSlug] = useState<string | null>(null);
-
-  // Reading a specific user blog
-  if (readingSlug) {
-    return (
-      <div className="mt-10">
-        <UserBlogReader slug={readingSlug} onBack={() => setReadingSlug(null)} />
-      </div>
-    );
-  }
 
   // Editor mode
   if (showEditor) {
@@ -46,7 +36,7 @@ export function BlogCommunitySection() {
         </button>
       </div>
 
-      <UserBlogList onReadBlog={(slug) => setReadingSlug(slug)} />
+      <UserBlogList />
     </div>
   );
 }

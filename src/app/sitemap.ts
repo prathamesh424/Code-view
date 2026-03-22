@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+export const revalidate = 86400; // updates sitemap at build, and revalidates every 24 hours
+
 const SITE_URL = "https://www.codevisualizer.app";
 
 async function fetchUserBlogSlugs(): Promise<Array<{ slug: string; createdAt: number }>> {
@@ -14,7 +16,29 @@ async function fetchUserBlogSlugs(): Promise<Array<{ slug: string; createdAt: nu
         args: {},
         format: "json",
       }),
-      next: { revalidate: 3600 },
+      next: { revalidate: 86400 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.value ?? [];
+  } catch {
+    return [];
+  }
+}
+
+async function fetchUserChallengeSlugs(): Promise<Array<{ slug: string; createdAt: number }>> {
+  const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
+  if (!convexUrl) return [];
+  try {
+    const res = await fetch(`${convexUrl}/api/query`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        path: "userChallenges:listForSitemap",
+        args: {},
+        format: "json",
+      }),
+      next: { revalidate: 86400 }, // generated at build time
     });
     if (!res.ok) return [];
     const data = await res.json();
@@ -35,6 +59,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: "/examples", changeFrequency: "weekly" as const, priority: 0.85, lastModified: now },
     { url: "/tools", changeFrequency: "monthly" as const, priority: 0.7, lastModified: now },
     { url: "/challenges", changeFrequency: "monthly" as const, priority: 0.7, lastModified: now },
+    { url: "/blog", changeFrequency: "weekly" as const, priority: 0.8, lastModified: now },
   ];
 
   const visualizerPages = [
@@ -46,13 +71,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: "/debugger-online", changeFrequency: "monthly" as const, priority: 0.85, lastModified: now },
   ];
 
-  const blogPages = [
-    { url: "/blog", changeFrequency: "weekly" as const, priority: 0.8, lastModified: now },
-    { url: "/blog/javascript-event-loop-explained", changeFrequency: "monthly" as const, priority: 0.75, lastModified: "2026-02-15" },
-    { url: "/blog/python-memory-management", changeFrequency: "monthly" as const, priority: 0.75, lastModified: "2026-02-20" },
-    { url: "/blog/stack-vs-heap", changeFrequency: "monthly" as const, priority: 0.75, lastModified: "2026-02-25" },
-  ];
-
   // Dynamically fetch user-submitted blog slugs
   const userBlogs = await fetchUserBlogSlugs();
   const userBlogPages = userBlogs.map((b) => ({
@@ -62,7 +80,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(b.createdAt).toISOString(),
   }));
 
-  const allPages = [...staticPages, ...visualizerPages, ...blogPages, ...userBlogPages];
+  // Dynamically fetch user-submitted challenge slugs
+  const userChallenges = await fetchUserChallengeSlugs();
+  const userChallengePages = userChallenges.map((c) => ({
+    url: `/challenges/${c.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+    lastModified: new Date(c.createdAt).toISOString(),
+  }));
+
+  const allPages = [...staticPages, ...visualizerPages, ...userBlogPages, ...userChallengePages];
 
   return allPages.map((page) => ({
     url: `${SITE_URL}${page.url}`,

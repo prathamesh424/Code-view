@@ -12,6 +12,8 @@ import {
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
+import Link from 'next/link';
+
 // ── Simple Markdown renderer ──
 function renderMarkdown(md: string): string {
   const html = md
@@ -58,11 +60,7 @@ function ToolbarBtn({ icon: Icon, label, onClick }: { icon: React.ElementType; l
 
 const POSTS_PER_PAGE = 6;
 
-interface BlogListProps {
-  onReadBlog: (slug: string) => void;
-}
-
-export function UserBlogList({ onReadBlog }: BlogListProps) {
+export function UserBlogList() {
   const blogs = useQuery(api.userBlogs.list);
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
@@ -151,9 +149,9 @@ export function UserBlogList({ onReadBlog }: BlogListProps) {
       ) : (
         <div className="space-y-5">
           {paginated.map((blog) => (
-            <button
+            <Link
               key={blog._id}
-              onClick={() => onReadBlog(blog.slug)}
+              href={`/blog/${blog.slug}`}
               className="block w-full text-left p-6 rounded-xl border border-border bg-surface hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 transition-all duration-200 group"
             >
               <div className="flex items-center gap-3 text-xs text-muted mb-3">
@@ -184,7 +182,7 @@ export function UserBlogList({ onReadBlog }: BlogListProps) {
                   Read more <ArrowRight className="w-3 h-3" />
                 </span>
               </div>
-            </button>
+            </Link>
           ))}
         </div>
       )}
@@ -214,7 +212,7 @@ export function UserBlogList({ onReadBlog }: BlogListProps) {
 }
 
 // ── Blog Reader ──
-export function UserBlogReader({ slug, onBack }: { slug: string; onBack: () => void }) {
+export function UserBlogReader({ slug, onBack, isRoute = false }: { slug: string; onBack?: () => void; isRoute?: boolean }) {
   const blog = useQuery(api.userBlogs.getBySlug, { slug });
 
   if (blog === undefined) {
@@ -225,16 +223,30 @@ export function UserBlogReader({ slug, onBack }: { slug: string; onBack: () => v
     return (
       <div className="text-center py-20">
         <p className="text-muted mb-4">Article not found.</p>
-        <button onClick={onBack} className="text-accent hover:underline text-sm">Back to articles</button>
+        {isRoute ? (
+          <Link href="/blog" className="text-accent hover:underline text-sm">Back to articles</Link>
+        ) : (
+          <button onClick={onBack} className="text-accent hover:underline text-sm">Back to articles</button>
+        )}
       </div>
     );
   }
 
-  return (
-    <article className="max-w-3xl mx-auto">
+  const BackButton = () => (
+    isRoute ? (
+      <Link href="/blog" className="text-sm text-accent hover:underline mb-6 inline-flex items-center gap-1">
+        <ChevronLeft className="w-3.5 h-3.5" /> Back to articles
+      </Link>
+    ) : (
       <button onClick={onBack} className="text-sm text-accent hover:underline mb-6 inline-flex items-center gap-1">
         <ChevronLeft className="w-3.5 h-3.5" /> Back to articles
       </button>
+    )
+  );
+
+  return (
+    <article className="max-w-3xl mx-auto">
+      <BackButton />
 
       <header className="mb-8">
         <h1 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight mb-4">{blog.title}</h1>
