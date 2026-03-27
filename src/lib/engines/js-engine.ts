@@ -34,7 +34,7 @@ export class JSEngine {
   private stepIndex = 0;
   private paused = false;
   private running = false;
-  private onStepCallback: ((step: ExecutionStep, state: JSEngineState) => void) | null = null;
+  private onStepCallback: ((step: ExecutionStep, state: JSEngineState) => void | Promise<void>) | null = null;
   private speed = 1;
 
   // Control flow signals
@@ -52,7 +52,7 @@ export class JSEngine {
 
   async execute(
     code: string,
-    onStep: (step: ExecutionStep, state: JSEngineState) => void
+    onStep: (step: ExecutionStep, state: JSEngineState) => void | Promise<void>
   ): Promise<void> {
     this.reset();
     this.running = true;
@@ -88,6 +88,7 @@ export class JSEngine {
         'Program execution complete'
       );
     } catch (err) {
+      if (err instanceof Error && err.message === 'ABORT') return;
       this.addConsoleEntry('error', `Error: ${(err as Error).message}`);
       await this.emitStep(1, 'statement', `Runtime error: ${(err as Error).message}`);
     }
@@ -835,7 +836,7 @@ case 'ArrayExpression': {
     this.stepIndex++;
 
     if (this.onStepCallback) {
-      this.onStepCallback(step, engineState);
+      await this.onStepCallback(step, engineState);
     }
 
     await this.delay(Math.max(100, 600 / this.speed));

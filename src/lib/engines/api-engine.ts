@@ -40,7 +40,7 @@ export class APIEngine {
   private paused = false;
   private speed = 1;
   private language: Language;
-  private onStepCallback: ((step: ExecutionStep, state: CppEngineState | JavaEngineState) => void) | null = null;
+  private onStepCallback: ((step: ExecutionStep, state: CppEngineState | JavaEngineState) => void | Promise<void>) | null = null;
 
   constructor(language: Language) {
     this.language = language;
@@ -52,7 +52,7 @@ export class APIEngine {
 
   async execute(
     code: string,
-    onStep: (step: ExecutionStep, state: CppEngineState | JavaEngineState) => void
+    onStep: (step: ExecutionStep, state: CppEngineState | JavaEngineState) => void | Promise<void>
   ): Promise<void> {
     this.reset();
     this.running = true;
@@ -281,7 +281,7 @@ export class APIEngine {
 
       this.steps.push(step);
       if (this.onStepCallback) {
-        this.onStepCallback(step, engineState);
+        await this.onStepCallback(step, engineState);
       }
 
       await this.delay(Math.max(100, 600 / this.speed));
@@ -433,7 +433,7 @@ export class APIEngine {
 
       this.steps.push(step);
       if (this.onStepCallback) {
-        this.onStepCallback(step, engineState);
+        await this.onStepCallback(step, engineState);
       }
 
       await this.delay(Math.max(100, 600 / this.speed));

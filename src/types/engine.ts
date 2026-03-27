@@ -152,7 +152,7 @@ export type EngineState = JSEngineState | PythonEngineState | CppEngineState | J
 
 export interface ExecutionEngine {
   language: Language;
-  execute(code: string, onStep: (step: ExecutionStep, engineState: EngineState) => void): Promise<void>;
+  execute(code: string, onStep: (step: ExecutionStep, engineState: any) => void | Promise<void>): Promise<void>;
   step(): Promise<ExecutionStep | null>;
   pause(): void;
   resume(): void;

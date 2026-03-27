@@ -147,8 +147,10 @@ export default function PlaygroundPage() {
     setConsoleOutput(step.consoleOutput);
   }, [currentStepIndex, steps, setCurrentLine, setCallStack, setVariables, setConsoleOutput]);
 
-  const handleRun = useCallback(async (startPaused = false) => {
+  const handleRun = useCallback(async (startPausedParam: unknown = false) => {
     if (isRunning) return;
+
+    const startPaused = typeof startPausedParam === 'boolean' ? startPausedParam : false;
 
     resetVisualizer();
     setIsRunning(true);
@@ -224,11 +226,13 @@ export default function PlaygroundPage() {
   const handlePause = useCallback(() => {
     setIsPaused(true);
     pauseRef.current = true;
+    engineRef.current?.pause();
   }, [setIsPaused]);
 
   const handleResume = useCallback(() => {
     setIsPaused(false);
     pauseRef.current = false;
+    engineRef.current?.resume();
     if (stepResolveRef.current) {
       stepResolveRef.current();
       stepResolveRef.current = null;
@@ -252,6 +256,7 @@ export default function PlaygroundPage() {
   const handleStop = useCallback(() => {
     abortRef.current = true;
     pauseRef.current = false;
+    engineRef.current?.stop();
     if (stepResolveRef.current) {
       stepResolveRef.current();
       stepResolveRef.current = null;

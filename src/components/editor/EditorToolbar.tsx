@@ -39,21 +39,21 @@ export function EditorToolbar({
       {/* Run / Pause / Resume */}
       {!isRunning ? (
         <Tooltip content="Visualize Execution (Ctrl+Enter)">
-          <Button size="sm" variant="primary" onClick={onRun}>
+          <Button size="sm" variant="primary" onClick={() => onRun()}>
             <Play className="w-3.5 h-3.5 fill-current" />
             <span className="hidden sm:inline">Visualize Execution</span>
           </Button>
         </Tooltip>
       ) : isPaused ? (
         <Tooltip content="Resume">
-          <Button size="sm" variant="primary" onClick={onResume}>
+          <Button size="sm" variant="primary" onClick={() => onResume()}>
             <Play className="w-3.5 h-3.5 fill-current" />
             <span className="hidden sm:inline">Resume</span>
           </Button>
         </Tooltip>
       ) : (
         <Tooltip content="Pause">
-          <Button size="sm" variant="secondary" onClick={onPause}>
+          <Button size="sm" variant="secondary" onClick={() => onPause()}>
             <Pause className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Pause</span>
           </Button>
@@ -62,21 +62,21 @@ export function EditorToolbar({
 
       {/* Step */}
       <Tooltip content="Step (F10)">
-        <Button size="sm" variant="ghost" onClick={onStep} disabled={!isRunning}>
+        <Button size="sm" variant="ghost" onClick={() => onStep()} disabled={!isRunning}>
           <SkipForward className="w-3.5 h-3.5" />
         </Button>
       </Tooltip>
 
       {/* Stop */}
       <Tooltip content="Stop">
-        <Button size="sm" variant="ghost" onClick={onStop} disabled={!isRunning}>
+        <Button size="sm" variant="ghost" onClick={() => onStop()} disabled={!isRunning}>
           <Square className="w-3.5 h-3.5" />
         </Button>
       </Tooltip>
 
       {/* Reset */}
       <Tooltip content="Reset (Ctrl+Shift+R)">
-        <Button size="sm" variant="ghost" onClick={onReset}>
+        <Button size="sm" variant="ghost" onClick={() => onReset()}>
           <RotateCcw className="w-3.5 h-3.5" />
         </Button>
       </Tooltip>

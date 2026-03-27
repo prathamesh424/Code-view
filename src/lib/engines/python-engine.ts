@@ -22,7 +22,7 @@ export class PythonEngine {
   private running = false;
   private paused = false;
   private speed = 1;
-  private onStepCallback: ((step: ExecutionStep, state: PythonEngineState) => void) | null = null;
+  private onStepCallback: ((step: ExecutionStep, state: PythonEngineState) => void | Promise<void>) | null = null;
 
   setSpeed(speed: number) {
     this.speed = speed;
@@ -30,7 +30,7 @@ export class PythonEngine {
 
   async execute(
     code: string,
-    onStep: (step: ExecutionStep, state: PythonEngineState) => void
+    onStep: (step: ExecutionStep, state: PythonEngineState) => void | Promise<void>
   ): Promise<void> {
     this.reset();
     this.running = true;
@@ -182,7 +182,7 @@ export class PythonEngine {
 
       this.steps.push(step);
       if (this.onStepCallback) {
-        this.onStepCallback(step, engineState);
+        await this.onStepCallback(step, engineState);
       }
 
       await this.delay(Math.max(100, 600 / this.speed));
