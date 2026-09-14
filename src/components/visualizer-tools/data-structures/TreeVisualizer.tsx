@@ -199,8 +199,13 @@ export function TreeVisualizer() {
   const depth = getTreeDepth(root);
   const nodeCount = countNodes(root);
   const positions = flattenTree(root, 300, 30, 130);
-  const svgWidth = 600;
-  const svgHeight = Math.max(depth * 70 + 60, 200);
+
+  // Compute SVG bounds dynamically from node positions to prevent overflow
+  const minX = positions.length > 0 ? Math.min(...positions.map(p => p.x)) - 30 : 0;
+  const maxX = positions.length > 0 ? Math.max(...positions.map(p => p.x)) + 30 : 600;
+  const maxY = positions.length > 0 ? Math.max(...positions.map(p => p.y)) + 40 : 200;
+  const svgWidth = Math.max(maxX - minX, 200);
+  const svgHeight = Math.max(maxY, 200);
 
   const stateColors: Record<string, { fill: string; stroke: string; text: string }> = {
     default: { fill: 'fill-accent/20', stroke: 'stroke-accent/50', text: 'fill-foreground' },
@@ -276,7 +281,7 @@ export function TreeVisualizer() {
       {/* Tree Visualization */}
       <div className="bg-surface rounded-xl border border-border p-4 overflow-x-auto">
         {root ? (
-          <svg width={svgWidth} height={svgHeight} className="mx-auto">
+          <svg viewBox={`${minX} 0 ${svgWidth} ${svgHeight}`} className="mx-auto w-full" style={{ maxHeight: svgHeight }} preserveAspectRatio="xMidYMid meet">
             {/* Edges */}
             {positions.map((pos) =>
               pos.parentX !== undefined && pos.parentY !== undefined ? (

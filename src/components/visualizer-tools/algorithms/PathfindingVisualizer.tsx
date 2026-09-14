@@ -42,8 +42,10 @@ export function PathfindingVisualizer() {
   const [isDrawing, setIsDrawing] = useState(false);
   const cancelRef = useRef(false);
   const speedRef = useRef(speed);
+  const gridRef = useRef(grid);
 
   useEffect(() => { speedRef.current = speed; }, [speed]);
+  useEffect(() => { gridRef.current = grid; }, [grid]);
 
   const sleep = useCallback(() => {
     const ms = Math.max(1, 100 - speedRef.current);
@@ -184,7 +186,7 @@ export function PathfindingVisualizer() {
 
       for (const [nr, nc] of getNeighbors(r, c)) {
         const nKey = `${nr},${nc}`;
-        if (!visited.has(nKey) && grid[nr][nc] !== 'wall') {
+        if (!visited.has(nKey) && gridRef.current[nr][nc] !== 'wall') {
           visited.add(nKey);
           cameFrom.set(nKey, key);
           queue.push([nr, nc]);
@@ -241,7 +243,7 @@ export function PathfindingVisualizer() {
 
       for (const [nr, nc] of getNeighbors(r, c)) {
         const nKey = `${nr},${nc}`;
-        if (!visitedSet.has(nKey) && grid[nr][nc] !== 'wall') {
+        if (!visitedSet.has(nKey) && gridRef.current[nr][nc] !== 'wall') {
           if (!cameFrom.has(nKey)) cameFrom.set(nKey, key);
           stack.push([nr, nc]);
         }
@@ -298,7 +300,7 @@ export function PathfindingVisualizer() {
 
       for (const [nr, nc] of getNeighbors(r, c)) {
         const nKey = `${nr},${nc}`;
-        if (!visitedSet.has(nKey) && grid[nr][nc] !== 'wall') {
+        if (!visitedSet.has(nKey) && gridRef.current[nr][nc] !== 'wall') {
           const newDist = (dist.get(key) || 0) + 1;
           if (newDist < (dist.get(nKey) ?? Infinity)) {
             dist.set(nKey, newDist);
@@ -365,7 +367,7 @@ export function PathfindingVisualizer() {
 
       for (const [nr, nc] of getNeighbors(r, c)) {
         const nKey = `${nr},${nc}`;
-        if (!visitedSet.has(nKey) && grid[nr][nc] !== 'wall') {
+        if (!visitedSet.has(nKey) && gridRef.current[nr][nc] !== 'wall') {
           const tentativeG = (gScore.get(key) || 0) + 1;
           if (tentativeG < (gScore.get(nKey) ?? Infinity)) {
             gScore.set(nKey, tentativeG);

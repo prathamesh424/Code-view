@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { BarChart3, Search, Map, ArrowUpDown, GitBranch, Table2, Type, Undo2, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { BarChart3, Search, Map, ArrowUpDown, GitBranch, Table2, Type, Undo2, ChevronDown, SlidersHorizontal, ArrowLeftRight, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buildPlaygroundUrl, getExampleById } from '@/lib/examples';
@@ -13,6 +13,9 @@ import { RecursionTreeVisualizer } from '@/components/visualizer-tools/algorithm
 import { DPTableVisualizer } from '@/components/visualizer-tools/algorithms/DPTableVisualizer';
 import { StringMatchingVisualizer } from '@/components/visualizer-tools/algorithms/StringMatchingVisualizer';
 import { BacktrackingVisualizer } from '@/components/visualizer-tools/algorithms/BacktrackingVisualizer';
+import { SlidingWindowVisualizer } from '@/components/visualizer-tools/algorithms/SlidingWindowVisualizer';
+import { TwoPointerVisualizer } from '@/components/visualizer-tools/algorithms/TwoPointerVisualizer';
+import { GreedyVisualizer } from '@/components/visualizer-tools/algorithms/GreedyVisualizer';
 
 const ALGO_OPTIONS = [
   {
@@ -28,6 +31,20 @@ const ALGO_OPTIONS = [
     icon: Search,
     description: 'Compare Linear Search vs Binary Search with step-by-step array visualization',
     algorithms: 'Linear Search, Binary Search',
+  },
+  {
+    id: 'sliding-window',
+    label: 'Sliding Window',
+    icon: SlidersHorizontal,
+    description: 'Animate fixed and variable-size sliding window techniques on arrays and strings',
+    algorithms: 'Max Sum Subarray, Longest Unique Substring, Min Window Sum',
+  },
+  {
+    id: 'two-pointers',
+    label: 'Two Pointers',
+    icon: ArrowLeftRight,
+    description: 'Visualize two-pointer technique with converging and diverging pointer strategies',
+    algorithms: 'Two Sum Sorted, Container With Most Water, Remove Duplicates',
   },
   {
     id: 'pathfinding',
@@ -51,6 +68,13 @@ const ALGO_OPTIONS = [
     algorithms: 'Fibonacci, Knapsack, LCS, Coin Change',
   },
   {
+    id: 'greedy',
+    label: 'Greedy',
+    icon: Zap,
+    description: 'Watch greedy algorithms make locally optimal choices step by step',
+    algorithms: 'Activity Selection, Fractional Knapsack, Job Sequencing',
+  },
+  {
     id: 'string-matching',
     label: 'String Matching',
     icon: Type,
@@ -71,9 +95,12 @@ type AlgoOption = typeof ALGO_OPTIONS[number]['id'];
 const ALGO_COMPONENTS: Record<AlgoOption, React.FC> = {
   sorting: SortingVisualizer,
   searching: SearchingVisualizer,
+  'sliding-window': SlidingWindowVisualizer,
+  'two-pointers': TwoPointerVisualizer,
   pathfinding: PathfindingVisualizer,
   recursion: RecursionTreeVisualizer,
   dp: DPTableVisualizer,
+  greedy: GreedyVisualizer,
   'string-matching': StringMatchingVisualizer,
   backtracking: BacktrackingVisualizer,
 };
@@ -169,48 +196,51 @@ export default function AlgorithmsPage() {
             </button>
 
             {/* Dropdown menu */}
-            {dropdownOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.15 }}
-                className="absolute top-full left-0 right-0 mt-2 bg-surface border border-border rounded-xl shadow-2xl overflow-hidden z-40 max-h-[60vh] overflow-y-auto"
-              >
-                {ALGO_OPTIONS.map((option) => {
-                  const Icon = option.icon;
-                  const isSelected = selected === option.id;
-                  return (
-                    <button
-                      key={option.id}
-                      onClick={() => {
-                        setSelected(option.id);
-                        setDropdownOpen(false);
-                      }}
-                      className={cn(
-                        'w-full flex items-start gap-3 px-4 py-3 text-left transition-colors',
-                        isSelected
-                          ? 'bg-accent/10'
-                          : 'hover:bg-surface-secondary active:bg-surface-tertiary'
-                      )}
-                    >
-                      <div className={cn(
-                        'w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5',
-                        isSelected ? 'bg-accent/20' : 'bg-surface-secondary'
-                      )}>
-                        <Icon className={cn('w-4.5 h-4.5', isSelected ? 'text-accent' : 'text-muted')} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className={cn('font-bold text-sm', isSelected ? 'text-accent' : 'text-foreground')}>
-                          {option.label}
+            <AnimatePresence>
+              {dropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute top-full left-0 right-0 mt-2 bg-surface border border-border rounded-xl shadow-2xl overflow-hidden z-40 max-h-[60vh] overflow-y-auto"
+                >
+                  {ALGO_OPTIONS.map((option) => {
+                    const Icon = option.icon;
+                    const isSelected = selected === option.id;
+                    return (
+                      <button
+                        key={option.id}
+                        onClick={() => {
+                          setSelected(option.id);
+                          setDropdownOpen(false);
+                        }}
+                        className={cn(
+                          'w-full flex items-start gap-3 px-4 py-3 text-left transition-colors',
+                          isSelected
+                            ? 'bg-accent/10'
+                            : 'hover:bg-surface-secondary active:bg-surface-tertiary'
+                        )}
+                      >
+                        <div className={cn(
+                          'w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5',
+                          isSelected ? 'bg-accent/20' : 'bg-surface-secondary'
+                        )}>
+                          <Icon className={cn('w-4.5 h-4.5', isSelected ? 'text-accent' : 'text-muted')} />
                         </div>
-                        <div className="text-xs text-muted mt-0.5 line-clamp-1">{option.description}</div>
-                        <div className="text-[10px] text-muted/70 mt-0.5 font-mono">{option.algorithms}</div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </motion.div>
-            )}
+                        <div className="min-w-0 flex-1">
+                          <div className={cn('font-bold text-sm', isSelected ? 'text-accent' : 'text-foreground')}>
+                            {option.label}
+                          </div>
+                          <div className="text-xs text-muted mt-0.5 line-clamp-1">{option.description}</div>
+                          <div className="text-[10px] text-muted/70 mt-0.5 font-mono">{option.algorithms}</div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
@@ -225,16 +255,48 @@ export default function AlgorithmsPage() {
         </motion.div>
 
         {/* SEO Content Section — provides crawlable text for search engines */}
-        <section id="seo-content" className="mt-12 pt-8 border-t border-border">
+        <section id="seo-content" className="mt-12 pt-8 border-t border-border space-y-6">
           <h2 className="text-lg font-semibold text-foreground mb-3">About the Algorithm Visualizer</h2>
           <p className="text-sm text-muted leading-relaxed">
-            Code Visualizer&apos;s algorithm visualizer brings sorting, searching, pathfinding, and 
-            dynamic programming algorithms to life with real-time animations. Watch Bubble Sort swap 
-            elements, see Dijkstra&apos;s shortest path unfold on a grid, or trace recursive call trees 
-            for Fibonacci — all step by step. Understanding Big O notation becomes intuitive when you 
-            can see the difference between O(n²) and O(n log n) play out visually. This visual learning 
-            tool doubles as a code debugger for algorithm logic, making it ideal for coding interviews, 
-            competitive programming prep, and computer science education.
+            Code Visualizer&apos;s algorithm visualizer brings sorting, searching, pathfinding, 
+            dynamic programming, sliding window, two pointers, and greedy algorithms to life with 
+            real-time animations. Watch Bubble Sort swap elements, see Dijkstra&apos;s shortest path 
+            unfold on a grid, animate the sliding window technique on arrays, or trace recursive call 
+            trees for Fibonacci — all step by step.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-muted leading-relaxed">
+            <div className="bg-surface rounded-lg border border-border p-4">
+              <h3 className="text-sm font-semibold text-foreground mb-2">Sliding Window Technique</h3>
+              <p>
+                Master the sliding window pattern used in coding interviews. Visualize fixed-size windows 
+                for maximum sum subarray (Kadane&apos;s variant) and variable-size windows for longest 
+                substring without repeating characters. See how the window expands and shrinks in real-time.
+              </p>
+            </div>
+            <div className="bg-surface rounded-lg border border-border p-4">
+              <h3 className="text-sm font-semibold text-foreground mb-2">Two Pointer Technique</h3>
+              <p>
+                Understand the two-pointer approach for sorted arrays and optimization problems. Watch 
+                pointers converge in Two Sum, see container boundaries shift in Container With Most Water, 
+                and track the slow/fast pointer pattern for removing duplicates.
+              </p>
+            </div>
+            <div className="bg-surface rounded-lg border border-border p-4">
+              <h3 className="text-sm font-semibold text-foreground mb-2">Greedy Algorithms</h3>
+              <p>
+                See how greedy algorithms make locally optimal choices. Visualize Activity Selection on a 
+                timeline, watch Fractional Knapsack fill by value-to-weight ratio, and observe Job 
+                Sequencing assign tasks to deadline slots for maximum profit.
+              </p>
+            </div>
+          </div>
+          <p className="text-sm text-muted leading-relaxed">
+            Understanding Big O notation becomes intuitive when you can see the difference between O(n²) 
+            and O(n log n) play out visually. This visual learning tool doubles as a code debugger for 
+            algorithm logic, making it ideal for coding interviews, competitive programming prep, and 
+            computer science education. All 10 algorithm categories — Sorting, Searching, Sliding Window, 
+            Two Pointers, Pathfinding, Recursion, Dynamic Programming, Greedy, String Matching, and 
+            Backtracking — are interactive and animated.
           </p>
         </section>
       </div>

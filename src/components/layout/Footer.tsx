@@ -19,6 +19,7 @@ const RESOURCE_LINKS = [
 
 const TOOL_LINKS = [
   { href: "/playground", label: "Code Playground" },
+  { href: "/sql-playground", label: "SQL Playground" },
   { href: "/algorithms", label: "Algorithms" },
   { href: "/data-structures", label: "Data Structures" },
   { href: "/tools", label: "Developer Tools" },

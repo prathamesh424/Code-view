@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 const NAV_ITEMS = [
   { href: '/', label: 'Home', icon: Home },
   { href: '/playground', label: 'Playground', icon: Play },
+  { href: '/sql-playground', label: 'SQL', icon: Database },
   { href: '/data-structures', label: 'Data Structures', icon: Database },
   { href: '/algorithms', label: 'Algorithms', icon: BarChart3 },
   { href: '/tools', label: 'Tools', icon: Wrench },

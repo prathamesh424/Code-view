@@ -24,7 +24,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-foreground text-center mb-8">
             Explore Code Visualizers
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
             {[
               { href: '/javascript-visualizer', label: 'JavaScript', color: 'text-warning' },
               { href: '/python-visualizer', label: 'Python', color: 'text-info' },
@@ -32,6 +32,7 @@ export default function Home() {
               { href: '/java-visualizer', label: 'Java', color: 'text-error' },
               { href: '/event-loop-visualizer', label: 'Event Loop', color: 'text-success' },
               { href: '/debugger-online', label: 'Debugger', color: 'text-accent-secondary' },
+              { href: '/sql-playground', label: 'SQL Playground', color: 'text-info' },
             ].map((item) => (
               <Link
                 key={item.href}

@@ -60,6 +60,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: "/tools", changeFrequency: "monthly" as const, priority: 0.7, lastModified: now },
     { url: "/challenges", changeFrequency: "monthly" as const, priority: 0.7, lastModified: now },
     { url: "/blog", changeFrequency: "weekly" as const, priority: 0.8, lastModified: now },
+    { url: "/sql-playground", changeFrequency: "monthly" as const, priority: 0.9, lastModified: now },
   ];
 
   const visualizerPages = [
