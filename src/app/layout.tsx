@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import { Header } from "@/components/layout/Header";
+import { AppShell } from "@/components/layout/AppShell";
 import { Footer } from "@/components/layout/Footer";
 import { ConvexClientProvider } from "@/components/providers/ConvexClientProvider";
 import "./globals.css";
@@ -250,9 +250,10 @@ export default function RootLayout({
         />
         <ConvexClientProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-            <Header />
-            <main>{children}</main>
-            <Footer />
+            <AppShell>
+              <main>{children}</main>
+              <Footer />
+            </AppShell>
           </ThemeProvider>
         </ConvexClientProvider>
       </body>
