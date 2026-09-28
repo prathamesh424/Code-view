@@ -49,7 +49,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <UserBlogReader slug={resolvedParams.slug} onBack={() => {}} isRoute />
+        <UserBlogReader slug={resolvedParams.slug} isRoute />
       </div>
     </div>
   );
