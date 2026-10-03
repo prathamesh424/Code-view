@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import {
   Play, Database, BarChart3, Wrench, Trophy, BookOpen,
   MessageSquare, Library, ChevronLeft, ChevronRight, Code2,
-  Home, X,
+  Home, X, Heart,
 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { href: '/challenges', label: 'Challenges', icon: Trophy },
   { href: '/blog', label: 'Blog', icon: BookOpen },
   { href: '/examples', label: 'Examples', icon: Library },
+  { href: '/contribute', label: 'Contribute', icon: Heart },
   { href: '/feedback', label: 'Feedback', icon: MessageSquare },
 ];
 

@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Community Feedback
+    url: https://www.codevisualizer.app/feedback
+    about: Share general feedback, suggestions, or your experience using Code-View.
+  - name: 🤝 Contributing Guide
+    url: https://github.com/prathamesh424/Code-view/blob/main/CONTRIBUTING.md
+    about: Read our full contributing guide before submitting your first PR.
+  - name: 🗺️ Roadmap & Ideas
+    url: https://www.codevisualizer.app/contribute
+    about: Browse the roadmap and find ideas for your next contribution.

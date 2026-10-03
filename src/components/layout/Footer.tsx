@@ -17,6 +17,7 @@ const RESOURCE_LINKS = [
   { href: "/blog", label: "Blog" },
   { href: "/examples", label: "Examples" },
   { href: "/challenges", label: "Challenges" },
+  { href: "/contribute", label: "Contribute" },
   { href: "/feedback", label: "Feedback" },
 ];
 
@@ -49,6 +50,8 @@ export function Footer() {
             <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
             <span className="text-border">·</span>
             <Link href="/playground" className="hover:text-foreground transition-colors">Playground</Link>
+            <span className="text-border">·</span>
+            <Link href="/contribute" className="hover:text-foreground transition-colors">Contribute</Link>
             <span className="text-border">·</span>
             <Link href="/feedback" className="hover:text-foreground transition-colors">Feedback</Link>
           </div>
