@@ -32,8 +32,61 @@ export const metadata: Metadata = {
 };
 
 export default function PythonVisualizerPage() {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.codevisualizer.app" },
+      { "@type": "ListItem", position: 2, name: "Python Visualizer", item: "https://www.codevisualizer.app/python-visualizer" },
+    ],
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is a Python visualizer?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A Python visualizer is an interactive tool that traces through Python code line by line, showing variables, memory allocations, reference counts, stack frames, and the heap in real-time. It helps learners understand how Python manages objects, garbage collection, and the Global Interpreter Lock (GIL).",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is Code Visualizer better than Python Tutor?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Code Visualizer offers several advantages over Python Tutor: it shows memory layout, reference counting, garbage collection cycles, and GIL states with a modern interface. It also supports JavaScript, C++, and Java in addition to Python, and includes algorithm visualizers and an SQL playground.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How does Python manage memory?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Python uses reference counting as its primary memory management mechanism. Each object tracks how many references point to it. When the count drops to zero, the memory is freed immediately. CPython also has a cyclic garbage collector that detects and cleans up reference cycles between objects.",
+        },
+      },
+    ],
+  };
+
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Python Visualizer — Trace Python Execution & Memory",
+    description: "Visualize Python code execution step by step. Watch memory allocation, reference counting, the GIL, list/dict internals, and garbage collection in real-time.",
+    url: "https://www.codevisualizer.app/python-visualizer",
+    isPartOf: { "@type": "WebSite", url: "https://www.codevisualizer.app" },
+    about: { "@type": "Thing", name: "Python Code Execution Visualization" },
+    educationalLevel: "Beginner to Advanced",
+    learningResourceType: "Interactive visualization tool",
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbJsonLd, faqJsonLd, webPageJsonLd]) }} />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-info/10 border border-info/20 text-info text-sm font-medium mb-6">

@@ -33,24 +33,81 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
-  
+  const title = `Blog: ${resolvedParams.slug.replace(/-/g, ' ')} | Code Visualizer`;
+  const description = `Read about ${resolvedParams.slug.replace(/-/g, ' ')} on Code Visualizer and understand how it works under the hood with step-by-step visualizations.`;
+  const url = `https://www.codevisualizer.app/blog/${resolvedParams.slug}`;
+
   return {
-    title: `Blog: ${resolvedParams.slug} | Code Visualizer`,
-    description: `Read the article ${resolvedParams.slug} on Code Visualizer and understand how it works under the hood.`,
+    title,
+    description,
     alternates: {
-      canonical: `https://www.codevisualizer.app/blog/${resolvedParams.slug}`
-    }
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "article",
+      images: [
+        {
+          url: "https://www.codevisualizer.app/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["https://www.codevisualizer.app/og-image.png"],
+    },
   };
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const resolvedParams = await params;
-  
+  const postUrl = `https://www.codevisualizer.app/blog/${resolvedParams.slug}`;
+  const postTitle = resolvedParams.slug.replace(/-/g, ' ');
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.codevisualizer.app" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.codevisualizer.app/blog" },
+      { "@type": "ListItem", position: 3, name: postTitle, item: postUrl },
+    ],
+  };
+
+  const blogPostingJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: postTitle,
+    description: `Read about ${postTitle} on Code Visualizer.`,
+    url: postUrl,
+    mainEntityOfPage: postUrl,
+    publisher: {
+      "@type": "Organization",
+      name: "Code Visualizer",
+      url: "https://www.codevisualizer.app",
+      logo: "https://www.codevisualizer.app/apple-touch-icon.png",
+    },
+    image: "https://www.codevisualizer.app/og-image.png",
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([breadcrumbJsonLd, blogPostingJsonLd]),
+        }}
+      />
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <UserBlogReader slug={resolvedParams.slug} isRoute />
-      </div>
+      </article>
     </div>
   );
 }

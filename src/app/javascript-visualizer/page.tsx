@@ -32,8 +32,64 @@ export const metadata: Metadata = {
 };
 
 export default function JavaScriptVisualizerPage() {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.codevisualizer.app" },
+      { "@type": "ListItem", position: 2, name: "JavaScript Visualizer", item: "https://www.codevisualizer.app/javascript-visualizer" },
+    ],
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is a JavaScript visualizer?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A JavaScript visualizer is an interactive tool that shows you how JavaScript code executes step by step. It displays the call stack, event loop, microtask and macrotask queues, closures, and scope chains in real-time, making it easier to understand complex async behavior like Promises and async/await.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How does the JavaScript event loop work?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "The JavaScript event loop processes code in a specific order: first, it executes all synchronous code on the call stack, then drains the microtask queue (Promise callbacks, queueMicrotask), then executes one macrotask (setTimeout, setInterval callbacks), and repeats. This cycle ensures non-blocking I/O while maintaining a single-threaded execution model.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is Code Visualizer a good alternative to Python Tutor for JavaScript?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. Code Visualizer goes beyond Python Tutor by offering event loop visualization, V8 engine internals, closure and scope chain tracking, and async/await execution tracing — all with a modern, beautiful interface. It supports JavaScript, Python, C++, and Java.",
+        },
+      },
+    ],
+  };
+
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "JavaScript Visualizer — See JS Execution Step by Step",
+    description: "Visualize JavaScript code execution in real-time. Watch the event loop, call stack, closures, promises, async/await, and the V8 engine internals — all step by step.",
+    url: "https://www.codevisualizer.app/javascript-visualizer",
+    isPartOf: { "@type": "WebSite", url: "https://www.codevisualizer.app" },
+    about: {
+      "@type": "Thing",
+      name: "JavaScript Code Execution Visualization",
+    },
+    educationalLevel: "Beginner to Advanced",
+    learningResourceType: "Interactive visualization tool",
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbJsonLd, faqJsonLd, webPageJsonLd]) }} />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Hero */}
         <div className="text-center mb-16">

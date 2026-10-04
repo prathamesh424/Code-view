@@ -82,6 +82,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SITE_URL,
+    languages: {
+      "en": SITE_URL,
+      "x-default": SITE_URL,
+    },
   },
   openGraph: {
     type: "website",
@@ -124,10 +128,9 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
-  verification: {
-    // Replace with your actual Google Search Console verification code
-    google: "YOUR_GOOGLE_VERIFICATION_CODE",
-  },
+  // verification: {
+  //   google: "YOUR_GOOGLE_VERIFICATION_CODE",  // TODO: Add real verification code from Google Search Console
+  // },
   other: {
     "msapplication-TileColor": "#6366f1",
     "apple-mobile-web-app-capable": "yes",
@@ -169,12 +172,6 @@ const softwareAppJsonLd = {
   ],
   screenshot: `${SITE_URL}/og-image.png`,
   softwareVersion: "1.0",
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    ratingCount: "150",
-    bestRating: "5",
-  },
 };
 
 const websiteJsonLd = {
@@ -200,6 +197,10 @@ const websiteJsonLd = {
     },
     "query-input": "required name=search_term_string",
   },
+  speakable: {
+    "@type": "SpeakableSpecification",
+    cssSelector: ["h1", "h2", "p"],
+  },
 };
 
 const organizationJsonLd = {
@@ -208,7 +209,51 @@ const organizationJsonLd = {
   name: "Code Visualizer",
   url: SITE_URL,
   logo: `${SITE_URL}/apple-touch-icon.png`,
-  sameAs: [],
+  sameAs: [
+    "https://github.com/prathamesh424/Code-view",
+  ],
+};
+
+const softwareSourceCodeJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name: "Code-View",
+  description:
+    "Open-source interactive code, algorithm, and database visualizer. Visualize JavaScript event loops, Python memory, C++ pointers, Java JVM internals, sorting algorithms, data structures, and SQL queries — all in your browser.",
+  codeRepository: "https://github.com/prathamesh424/Code-view",
+  url: SITE_URL,
+  programmingLanguage: ["TypeScript", "JavaScript", "React", "Next.js"],
+  runtimePlatform: "Node.js",
+  license: "https://opensource.org/licenses/MIT",
+  author: {
+    "@type": "Organization",
+    name: "Code Visualizer",
+    url: SITE_URL,
+  },
+  about: {
+    "@type": "Thing",
+    name: "Code Visualization and Algorithm Education",
+  },
+};
+
+const educationalOrgJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: "Code Visualizer",
+  url: SITE_URL,
+  description:
+    "Free educational platform that makes computer science concepts intuitive through interactive, step-by-step code visualizations for JavaScript, Python, C++, Java, algorithms, data structures, and SQL.",
+  areaServed: "Worldwide",
+  teaches: [
+    "Computer Science",
+    "Data Structures",
+    "Algorithms",
+    "JavaScript",
+    "Python",
+    "C++",
+    "Java",
+    "SQL",
+  ],
 };
 
 export default function RootLayout({
@@ -245,6 +290,8 @@ export default function RootLayout({
               softwareAppJsonLd,
               websiteJsonLd,
               organizationJsonLd,
+              softwareSourceCodeJsonLd,
+              educationalOrgJsonLd,
             ]),
           }}
         />

@@ -33,8 +33,61 @@ export const metadata: Metadata = {
 };
 
 export default function EventLoopVisualizerPage() {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.codevisualizer.app" },
+      { "@type": "ListItem", position: 2, name: "Event Loop Visualizer", item: "https://www.codevisualizer.app/event-loop-visualizer" },
+    ],
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is the JavaScript event loop?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "The JavaScript event loop is the mechanism that handles asynchronous operations in JavaScript's single-threaded runtime. It continuously checks the call stack and task queues: first executing synchronous code, then draining the microtask queue (Promise callbacks), then processing one macrotask (setTimeout/setInterval callbacks), and repeating this cycle.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What is the difference between microtasks and macrotasks?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Microtasks (Promise.then, queueMicrotask, async/await continuations) are processed after the current synchronous code finishes and before the next macrotask. Macrotasks (setTimeout, setInterval, I/O callbacks) are processed one at a time, with the microtask queue fully drained between each macrotask.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Why does setTimeout(fn, 0) not execute immediately?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "setTimeout(fn, 0) places the callback in the macrotask queue. Even with a 0ms delay, it must wait for: (1) the current synchronous call stack to empty, (2) all microtasks to drain, and (3) its turn in the macrotask queue. This is why it runs after Promise.then callbacks despite appearing earlier in code.",
+        },
+      },
+    ],
+  };
+
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Event Loop Visualizer — Understand JavaScript Async Execution",
+    description: "Interactive event loop visualizer. Watch setTimeout, Promises, async/await, and microtask/macrotask queues execute in real-time.",
+    url: "https://www.codevisualizer.app/event-loop-visualizer",
+    isPartOf: { "@type": "WebSite", url: "https://www.codevisualizer.app" },
+    about: { "@type": "Thing", name: "JavaScript Event Loop Visualization" },
+    educationalLevel: "Intermediate",
+    learningResourceType: "Interactive visualization tool",
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbJsonLd, faqJsonLd, webPageJsonLd]) }} />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-success/10 border border-success/20 text-success text-sm font-medium mb-6">

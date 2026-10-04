@@ -20,13 +20,61 @@ const sqlJsonLd = {
   },
 };
 
+const sqlBreadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.codevisualizer.app" },
+    { "@type": "ListItem", position: 2, name: "SQL Playground", item: "https://www.codevisualizer.app/sql-playground" },
+  ],
+};
+
+const sqlFaqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is this SQL Playground free to use?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, the SQL Playground is completely free. It runs entirely in your browser using WebAssembly — no account, no server, no limits.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What SQL dialect does it support?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The playground uses SQLite (via sql.js), which supports standard SQL including JOINs, subqueries, CTEs, window functions, and more. Most SQL interview questions can be practiced here.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is my data saved?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Data exists only in your browser session. Refreshing the page resets the database to its default state. Use the Reset DB button to restore the original sample data at any time.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I create my own tables?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes! You can run CREATE TABLE, INSERT, UPDATE, DELETE, and any DDL/DML statements. The schema explorer updates automatically to show your new tables.",
+      },
+    },
+  ],
+};
+
 export default function SqlPlaygroundPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* JSON-LD structured data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(sqlJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([sqlJsonLd, sqlBreadcrumbJsonLd, sqlFaqJsonLd]) }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

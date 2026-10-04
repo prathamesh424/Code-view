@@ -7,9 +7,62 @@ import { ContinueSection } from '@/components/landing/ContinueSection';
 import { ExploreCTAs } from '@/components/landing/ExploreCTAs';
 import Link from 'next/link';
 
+const homeFaqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What is Code Visualizer?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Code Visualizer is a free, open-source web application that visualizes code execution step by step in real time for JavaScript, Python, C++, and Java. It displays call stacks, event loops, memory layouts (stack and heap), garbage collection, algorithm animations, and SQL queries directly in your browser without any software installation.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is Code Visualizer free?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, Code Visualizer is 100% free and open source under the MIT license. You can use all visualizers, debuggers, algorithm modules, and the SQL playground without creating an account or paying any subscription fees.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How is Code Visualizer better than Python Tutor?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "While Python Tutor focuses primarily on basic Python variables, Code Visualizer provides deep, multi-language engine insights: the JavaScript event loop (microtasks vs macrotasks), Python GIL and reference counting, C++ pointer dereferencing and RAII, JVM garbage collection generations, 10+ interactive algorithm visualizers (Sliding Window, Two Pointers, DP, Pathfinding), and an in-browser SQLite database playground.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I use Code Visualizer for coding interview preparation?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Code Visualizer is specifically designed to help software engineers master LeetCode and DSA interview patterns visually. It includes interactive visualizers for Sliding Window, Two Pointers, Dynamic Programming tables, Binary Search, BFS/DFS Pathfinding, Backtracking (N-Queens, Sudoku), and Greedy algorithms.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What programming languages are supported?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Code Visualizer supports JavaScript (ES6+, V8 event loop), Python (CPython memory and GIL), C/C++ (pointers and RAII), Java (JVM stack and heap), and SQL (SQLite with interactive queries).",
+      },
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(homeFaqJsonLd),
+        }}
+      />
       <Hero />
       <InteractiveDemo />
       <PopularVisualizations />

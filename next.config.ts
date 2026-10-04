@@ -38,7 +38,24 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/(.*)",
-        headers: securityHeaders,
+        headers: [
+          ...securityHeaders,
+          // Allow all indexing for traditional and AI search engines
+          {
+            key: "X-Robots-Tag",
+            value: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+          },
+        ],
+      },
+      // Cache static pages for performance (helps Core Web Vitals)
+      {
+        source: "/:path(javascript-visualizer|python-visualizer|cpp-visualizer|java-visualizer|event-loop-visualizer|debugger-online|algorithms|data-structures|tools|contribute)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400",
+          },
+        ],
       },
     ];
   },

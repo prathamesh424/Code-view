@@ -31,8 +31,61 @@ export const metadata: Metadata = {
 };
 
 export default function JavaVisualizerPage() {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.codevisualizer.app" },
+      { "@type": "ListItem", position: 2, name: "Java Visualizer", item: "https://www.codevisualizer.app/java-visualizer" },
+    ],
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is a Java visualizer?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A Java visualizer is an interactive tool that shows how Java code executes on the JVM step by step. It displays object creation on the heap, method calls through the call stack, garbage collection generations (Young, Old, Permanent), and OOP concepts like inheritance and polymorphism in real-time.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How does Java garbage collection work?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Java uses automatic garbage collection to manage memory. Objects are allocated on the heap and organized into generations: Young Generation (for short-lived objects), Old Generation (for long-lived objects), and Permanent Generation (for class metadata). The JVM periodically scans for unreachable objects and reclaims their memory, using algorithms like mark-and-sweep and generational collection.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How is Java memory management different from C++?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Java uses automatic garbage collection — the JVM handles memory deallocation for you. C++ uses manual memory management with new/delete or smart pointers (RAII). Java eliminates memory leaks from forgotten deallocations but can suffer from GC pauses. C++ gives full control but requires careful lifetime management.",
+        },
+      },
+    ],
+  };
+
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Java Visualizer — JVM, Garbage Collection & OOP Visualization",
+    description: "Visualize Java code execution on the JVM. See the call stack, heap objects, garbage collection generations, and OOP concepts like inheritance and polymorphism — step by step.",
+    url: "https://www.codevisualizer.app/java-visualizer",
+    isPartOf: { "@type": "WebSite", url: "https://www.codevisualizer.app" },
+    about: { "@type": "Thing", name: "Java JVM Code Execution Visualization" },
+    educationalLevel: "Beginner to Advanced",
+    learningResourceType: "Interactive visualization tool",
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbJsonLd, faqJsonLd, webPageJsonLd]) }} />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-error/10 border border-error/20 text-error text-sm font-medium mb-6">

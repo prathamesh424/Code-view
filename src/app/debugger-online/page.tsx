@@ -32,8 +32,61 @@ export const metadata: Metadata = {
 };
 
 export default function DebuggerOnlinePage() {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.codevisualizer.app" },
+      { "@type": "ListItem", position: 2, name: "Online Debugger", item: "https://www.codevisualizer.app/debugger-online" },
+    ],
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is an online code debugger?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "An online code debugger is a browser-based tool that lets you debug code without installing any software. You can set breakpoints, step through code line by line, inspect variables and their values, and watch the call stack — all directly in your web browser.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What programming languages can I debug online?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Code Visualizer's online debugger supports JavaScript, Python, C++, and Java. You can switch between languages with one click and the debugger adapts automatically to each language's execution model.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Do I need to install anything to use the online debugger?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. The online debugger runs entirely in your browser. There is no IDE to install, no plugins to configure, and no account to create. Just paste your code and start debugging immediately.",
+        },
+      },
+    ],
+  };
+
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Online Debugger — Debug Code in Your Browser for Free",
+    description: "Debug JavaScript, Python, C++, and Java code online for free. Set breakpoints, step through code, inspect variables, and watch the call stack.",
+    url: "https://www.codevisualizer.app/debugger-online",
+    isPartOf: { "@type": "WebSite", url: "https://www.codevisualizer.app" },
+    about: { "@type": "Thing", name: "Online Code Debugging" },
+    educationalLevel: "Beginner to Advanced",
+    learningResourceType: "Interactive debugging tool",
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbJsonLd, faqJsonLd, webPageJsonLd]) }} />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-secondary/10 border border-accent-secondary/20 text-accent-secondary text-sm font-medium mb-6">

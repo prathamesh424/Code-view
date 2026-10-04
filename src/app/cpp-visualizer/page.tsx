@@ -30,8 +30,61 @@ export const metadata: Metadata = {
 };
 
 export default function CppVisualizerPage() {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.codevisualizer.app" },
+      { "@type": "ListItem", position: 2, name: "C++ Visualizer", item: "https://www.codevisualizer.app/cpp-visualizer" },
+    ],
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is a C++ visualizer?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A C++ visualizer is an interactive tool that shows how C++ code executes step by step, displaying pointer resolution to memory addresses, stack frame allocation for local variables, heap allocation for dynamic objects, and RAII/smart pointer lifetime management in real-time.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How do pointers work in C++?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Pointers in C++ store memory addresses of other variables or objects. They can be dereferenced to access the value at that address. Code Visualizer shows pointer arithmetic, reference vs pointer differences, dangling pointer detection, and how smart pointers (unique_ptr, shared_ptr) automate memory management through RAII.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What is the difference between stack and heap memory in C++?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Stack memory is automatically managed and used for local variables and function call frames — it is fast but limited in size. Heap memory is manually managed using new/delete (or smart pointers) for dynamic allocation — it is larger but requires careful lifetime management to avoid memory leaks.",
+        },
+      },
+    ],
+  };
+
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "C++ Visualizer — Pointers, Memory & RAII Visualization",
+    description: "Visualize C++ code execution with pointer tracking, memory addresses, stack/heap allocation, RAII, and smart pointers — all rendered step by step.",
+    url: "https://www.codevisualizer.app/cpp-visualizer",
+    isPartOf: { "@type": "WebSite", url: "https://www.codevisualizer.app" },
+    about: { "@type": "Thing", name: "C++ Memory Management Visualization" },
+    educationalLevel: "Intermediate to Advanced",
+    learningResourceType: "Interactive visualization tool",
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbJsonLd, faqJsonLd, webPageJsonLd]) }} />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-medium mb-6">
