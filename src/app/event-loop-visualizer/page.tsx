@@ -106,7 +106,7 @@ export default function EventLoopVisualizerPage() {
           </p>
           <div className="mt-8">
             <Link
-              href="/playground"
+              href="/playground/javascript"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-white font-semibold hover:bg-accent-hover shadow-lg shadow-accent/25 transition-all duration-200 hover:-translate-y-0.5"
             >
               Try the Event Loop Visualizer

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   Panel,
@@ -26,6 +27,7 @@ import { useMediaQuery } from '@/lib/useMediaQuery';
 import type { ExecutionStep, EngineState, Language } from '@/types/engine';
 import { addRecentVisualization } from '@/lib/user-progress';
 import { getExampleById } from '@/lib/examples';
+import { getPlaygroundSEO } from '@/lib/playground-seo';
 
 function createEngine(language: Language) {
   switch (language) {
@@ -42,7 +44,10 @@ function createEngine(language: Language) {
   }
 }
 
-export default function PlaygroundPage() {
+export default function LanguagePlaygroundPage() {
+  const params = useParams<{ lang: string }>();
+  const config = getPlaygroundSEO(params.lang);
+
   const {
     code,
     language,
@@ -74,18 +79,24 @@ export default function PlaygroundPage() {
   const abortRef = useRef(false);
   const pauseRef = useRef(false);
   const stepResolveRef = useRef<(() => void) | null>(null);
+  const prevLangRef = useRef<string | null>(null);
 
   const isMobile = useMediaQuery('(max-width: 767px)');
   const [seoHidden, setSeoHidden] = useState(false);
 
+  // Sync editor language with URL slug
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const urlCode = params.get('code');
-    const urlLang = params.get('lang');
-    const exampleId = params.get('example');
+    if (config && prevLangRef.current !== config.engineLanguage) {
+      prevLangRef.current = config.engineLanguage;
+      setLanguage(config.engineLanguage);
+    }
+  }, [config, setLanguage]);
 
-    const validLangs: Language[] = ['javascript', 'python', 'c', 'cpp', 'java'];
-    
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlCode = urlParams.get('code');
+    const exampleId = urlParams.get('example');
+
     if (exampleId) {
       const example = getExampleById(exampleId);
       if (example) {
@@ -94,27 +105,21 @@ export default function PlaygroundPage() {
         addRecentVisualization({
           id: exampleId,
           title: `Example: ${example.title}`,
-          href: `/playground?example=${exampleId}`,
+          href: `/playground/${params.lang}?example=${exampleId}`,
         });
         return;
       }
     }
 
-    if (urlLang && validLangs.includes(urlLang as Language)) {
-      setLanguage(urlLang as Language);
-    }
     if (urlCode) {
       setCode(urlCode);
-    }
-
-    if (urlCode) {
       addRecentVisualization({
         id: `custom-${Date.now()}`,
         title: 'Custom shared visualization',
-        href: `/playground?${params.toString()}`,
+        href: `/playground/${params.lang}?${urlParams.toString()}`,
       });
     }
-  }, [setCode, setLanguage]);
+  }, [setCode, setLanguage, params.lang]);
 
   // Sync pause state to ref
   useEffect(() => {
@@ -300,7 +305,7 @@ export default function PlaygroundPage() {
   return (
     <div className="h-[calc(100vh-3.5rem)] flex flex-col">
       {/* SEO H1 — visually hidden but accessible to crawlers */}
-      <h1 className="sr-only">Interactive Code Playground</h1>
+      <h1 className="sr-only">{config?.h1 ?? 'Interactive Code Playground'}</h1>
 
       {/* Top bar */}
       <div className="flex items-center gap-2 px-2 sm:px-3 py-2 border-b border-border bg-surface flex-wrap">
@@ -349,8 +354,8 @@ export default function PlaygroundPage() {
         </Panel>
       </Group>
 
-      {/* SEO Content Section — hidden on mobile, dismissible on desktop */}
-      {!isMobile && !seoHidden && (
+      {/* Language-specific SEO Content Section */}
+      {!isMobile && !seoHidden && config && (
         <section id="seo-content" className="px-6 py-6 border-t border-border bg-surface relative">
           <button
             onClick={() => setSeoHidden(true)}
@@ -360,36 +365,44 @@ export default function PlaygroundPage() {
             <X className="w-4 h-4" />
           </button>
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-lg font-semibold text-foreground mb-3">About the Code Playground</h2>
-            <p className="text-sm text-muted leading-relaxed">
-              Code Visualizer&apos;s interactive playground lets you write, run, and visualize code execution 
-              in real-time. Paste any JavaScript, Python, C++, or Java snippet and watch as the call stack 
-              grows, variables change, and memory is allocated — step by step. Set breakpoints, step over 
-              function calls, and inspect the full program state at any point. Whether you&apos;re studying 
-              Big O notation, debugging a tricky algorithm, or learning through visual learning, this 
-              code debugger makes complex execution flows easy to understand. Perfect for coding interviews, 
-              CS courses, and everyday development.
-            </p>
+            <h2 className="text-lg font-semibold text-foreground mb-3">
+              {config.seoContent.heading}
+            </h2>
+            {config.seoContent.paragraphs.map((p, i) => (
+              <p key={i} className="text-sm text-muted leading-relaxed mb-3 last:mb-0">
+                {p}
+              </p>
+            ))}
 
-            {/* Cross-links to language-specific playgrounds */}
+            {/* Cross-links to other language playgrounds */}
             <div className="mt-4 pt-4 border-t border-border/50 flex flex-wrap items-center gap-2">
-              <span className="text-xs text-muted">Language-specific playgrounds:</span>
-              {[
-                { href: '/playground/javascript', label: 'JavaScript' },
-                { href: '/playground/python', label: 'Python' },
-                { href: '/playground/java', label: 'Java' },
-                { href: '/playground/cpp', label: 'C++' },
-                { href: '/playground/c', label: 'C' },
-              ].map((lang) => (
+              <span className="text-xs text-muted">Try other languages:</span>
+              {config.otherLanguages.map((other) => (
                 <Link
-                  key={lang.href}
-                  href={lang.href}
+                  key={other.slug}
+                  href={`/playground/${other.slug}`}
                   className="text-xs px-2.5 py-1 rounded-md border border-border hover:border-accent/50 text-muted hover:text-accent transition-colors"
                 >
-                  {lang.label}
+                  {other.label}
                 </Link>
               ))}
             </div>
+
+            {/* Related resources */}
+            {config.relatedLinks.length > 0 && (
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                {config.relatedLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-xs text-accent hover:text-accent-hover transition-colors"
+                    title={link.description}
+                  >
+                    {link.title}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -398,4 +411,3 @@ export default function PlaygroundPage() {
     </div>
   );
 }
-

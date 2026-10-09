@@ -65,6 +65,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: "/feedback", changeFrequency: "monthly" as const, priority: 0.5, lastModified: now },
   ];
 
+  const languagePlaygroundPages = [
+    { url: "/playground/javascript", changeFrequency: "weekly" as const, priority: 0.9, lastModified: now },
+    { url: "/playground/python", changeFrequency: "weekly" as const, priority: 0.9, lastModified: now },
+    { url: "/playground/java", changeFrequency: "weekly" as const, priority: 0.9, lastModified: now },
+    { url: "/playground/cpp", changeFrequency: "weekly" as const, priority: 0.9, lastModified: now },
+    { url: "/playground/c", changeFrequency: "weekly" as const, priority: 0.9, lastModified: now },
+  ];
+
   const visualizerPages = [
     { url: "/javascript-visualizer", changeFrequency: "monthly" as const, priority: 0.9, lastModified: now },
     { url: "/python-visualizer", changeFrequency: "monthly" as const, priority: 0.9, lastModified: now },
@@ -92,7 +100,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(c.createdAt).toISOString(),
   }));
 
-  const allPages = [...staticPages, ...visualizerPages, ...userBlogPages, ...userChallengePages];
+  const allPages = [...staticPages, ...languagePlaygroundPages, ...visualizerPages, ...userBlogPages, ...userChallengePages];
 
   return allPages.map((page) => ({
     url: `${SITE_URL}${page.url}`,

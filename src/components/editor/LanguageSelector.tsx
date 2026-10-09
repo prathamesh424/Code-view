@@ -5,13 +5,26 @@ import { LANGUAGES } from '@/lib/constants';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState, useRef, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 
 export function LanguageSelector() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const isPlayground = pathname.startsWith('/playground');
   const { language, setLanguage, isRunning } = useEditorStore();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const current = LANGUAGES.find((l) => l.id === language)!;
+
+  const handleSelectLanguage = (newLang: typeof language) => {
+    setOpen(false);
+    if (newLang === language) return;
+    setLanguage(newLang);
+    if (isPlayground) {
+      router.push(`/playground/${newLang}`);
+    }
+  };
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -49,10 +62,7 @@ export function LanguageSelector() {
           {LANGUAGES.map((lang) => (
             <button
               key={lang.id}
-              onClick={() => {
-                setLanguage(lang.id);
-                setOpen(false);
-              }}
+              onClick={() => handleSelectLanguage(lang.id)}
               className={cn(
                 'w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors cursor-pointer',
                 lang.id === language
