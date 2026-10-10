@@ -98,9 +98,9 @@ export const PLAYGROUND_LANGUAGES: Record<PlaygroundLang, PlaygroundSEOConfig> =
       },
     ],
     relatedLinks: [
+      { href: "/blog/interactive-javascript-playground-event-loop-guide", title: "Guide: Interactive JS Playground Guide \u2192", description: "Learn how to debug async code, microtasks, and the event loop." },
       { href: "/javascript-visualizer", title: "JavaScript Visualizer \u2192", description: "Deep-dive into event loop, V8 internals, and closure visualization." },
       { href: "/event-loop-visualizer", title: "Event Loop Visualizer \u2192", description: "Focused view of setTimeout, Promises, and async/await execution." },
-      { href: "/debugger-online", title: "Online Debugger \u2192", description: "Set breakpoints and step through code with our interactive debugger." },
     ],
     otherLanguages: [
       { slug: "python", label: "Python" },
@@ -161,9 +161,9 @@ export const PLAYGROUND_LANGUAGES: Record<PlaygroundLang, PlaygroundSEOConfig> =
       },
     ],
     relatedLinks: [
+      { href: "/blog/best-online-python-playground-debuggers", title: "Guide: Best Online Python Playgrounds \u2192", description: "Compare top browser-based Python debuggers and visualizers." },
       { href: "/python-visualizer", title: "Python Visualizer \u2192", description: "Deep-dive into Python memory, GIL, and reference counting visualization." },
       { href: "/blog/python-memory-management", title: "Blog: Python Memory Management \u2192", description: "How CPython manages memory, reference counting, and the GC." },
-      { href: "/blog/stack-vs-heap", title: "Blog: Stack vs Heap \u2192", description: "Understand the difference between stack and heap memory allocation." },
     ],
     otherLanguages: [
       { slug: "javascript", label: "JavaScript" },
@@ -224,9 +224,9 @@ export const PLAYGROUND_LANGUAGES: Record<PlaygroundLang, PlaygroundSEOConfig> =
       },
     ],
     relatedLinks: [
+      { href: "/blog/best-online-java-playground-beginners", title: "Guide: Best Online Java Playground \u2192", description: "Why an interactive visual playground is best for learning Java." },
       { href: "/java-visualizer", title: "Java Visualizer \u2192", description: "Deep-dive into JVM internals, GC generations, and OOP visualization." },
       { href: "/blog/stack-vs-heap", title: "Blog: Stack vs Heap \u2192", description: "Understand Java\u2019s stack and heap memory model." },
-      { href: "/cpp-visualizer", title: "C++ Visualizer \u2192", description: "Compare Java\u2019s GC with C++\u2019s manual memory management." },
     ],
     otherLanguages: [
       { slug: "javascript", label: "JavaScript" },
@@ -287,9 +287,9 @@ export const PLAYGROUND_LANGUAGES: Record<PlaygroundLang, PlaygroundSEOConfig> =
       },
     ],
     relatedLinks: [
+      { href: "/blog/best-cpp-playground-online-compiler", title: "Guide: Best C++ Playgrounds & Compilers \u2192", description: "Discover the best tools to visualize pointers and RAII." },
       { href: "/cpp-visualizer", title: "C++ Visualizer \u2192", description: "Deep-dive into pointers, memory addresses, and RAII visualization." },
       { href: "/blog/stack-vs-heap", title: "Blog: Stack vs Heap \u2192", description: "Master the difference between stack and heap memory allocation." },
-      { href: "/java-visualizer", title: "Java Visualizer \u2192", description: "Compare manual C++ memory management with Java\u2019s garbage collector." },
     ],
     otherLanguages: [
       { slug: "javascript", label: "JavaScript" },
@@ -351,9 +351,9 @@ export const PLAYGROUND_LANGUAGES: Record<PlaygroundLang, PlaygroundSEOConfig> =
       },
     ],
     relatedLinks: [
-      { href: "/cpp-visualizer", title: "C++ Visualizer \u2192", description: "Explore modern C++ features, RAII, and object lifetimes." },
+      { href: "/blog/visualize-c-pointers-memory-online-playground", title: "Guide: Learn C Pointers Visually \u2192", description: "Master pointer arithmetic and malloc with interactive memory visualization." },
       { href: "/blog/stack-vs-heap", title: "Blog: Stack vs Heap \u2192", description: "Understand how memory allocation differs between the stack and the heap." },
-      { href: "/data-structures", title: "Data Structures \u2192", description: "Interactive visualizations of linked lists, trees, and graphs." },
+      { href: "/cpp-visualizer", title: "C++ Visualizer \u2192", description: "Explore modern C++ features, RAII, and object lifetimes." },
     ],
     otherLanguages: [
       { slug: "javascript", label: "JavaScript" },

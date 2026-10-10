@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { STATIC_BLOG_POSTS } from "@/lib/blogs-data";
 
 export const revalidate = 86400; // updates sitemap at build, and revalidates every 24 hours
 
@@ -82,14 +83,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: "/debugger-online", changeFrequency: "monthly" as const, priority: 0.85, lastModified: now },
   ];
 
-  // Dynamically fetch user-submitted blog slugs
-  const userBlogs = await fetchUserBlogSlugs();
-  const userBlogPages = userBlogs.map((b) => ({
-    url: `/blog/${b.slug}`,
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-    lastModified: new Date(b.createdAt).toISOString(),
+  // Official static guides & tutorial blog posts
+  const staticBlogPages = STATIC_BLOG_POSTS.map((post) => ({
+    url: `/blog/${post.slug}`,
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+    lastModified: new Date(post.publishedAt).toISOString(),
   }));
+
+  // Dynamically fetch user-submitted blog slugs
+  const staticSlugsSet = new Set(STATIC_BLOG_POSTS.map((p) => p.slug));
+  const userBlogs = await fetchUserBlogSlugs();
+  const userBlogPages = userBlogs
+    .filter((b) => !staticSlugsSet.has(b.slug))
+    .map((b) => ({
+      url: `/blog/${b.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+      lastModified: new Date(b.createdAt).toISOString(),
+    }));
 
   // Dynamically fetch user-submitted challenge slugs
   const userChallenges = await fetchUserChallengeSlugs();
@@ -100,7 +112,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(c.createdAt).toISOString(),
   }));
 
-  const allPages = [...staticPages, ...languagePlaygroundPages, ...visualizerPages, ...userBlogPages, ...userChallengePages];
+  const allPages = [
+    ...staticPages,
+    ...languagePlaygroundPages,
+    ...visualizerPages,
+    ...staticBlogPages,
+    ...userBlogPages,
+    ...userChallengePages,
+  ];
 
   return allPages.map((page) => ({
     url: `${SITE_URL}${page.url}`,

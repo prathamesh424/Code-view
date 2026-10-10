@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { BookOpen } from "lucide-react";
 import { BlogCommunitySection } from './BlogCommunitySection';
+import { FeaturedBlogs } from '@/components/blog/FeaturedBlogs';
 
 export const metadata: Metadata = {
   title: "CodeVisualizer Blog — Tutorials, CS Concepts & Programming Guides",
@@ -82,7 +83,11 @@ export default function BlogPage() {
           </p>
         </div>
 
-        <BlogCommunitySection />
+        <FeaturedBlogs />
+
+        <div className="pt-8 border-t border-border">
+          <BlogCommunitySection />
+        </div>
       </div>
     </div>
   );
